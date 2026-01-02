@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ShopApi.Models; 
 
 namespace ShopApi.Data
 {
