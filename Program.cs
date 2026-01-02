@@ -1,4 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using ShopApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// 1. 從設定檔 (包含 appsettings.json 和 User Secrets) 讀取連線字串
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// 2. 註冊 DbContext，並告訴它用 SQL Server
+builder.Services.AddDbContext<ShopDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,7 +33,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
