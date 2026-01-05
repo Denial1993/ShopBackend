@@ -15,5 +15,9 @@ namespace ShopApi.Data
         // 以後我們的資料表 (Table) 會定義在這裡
         // 例如：public DbSet<Product> Products { get; set; }
         // 目前先留空，等下一階段再來加
+        
+        // 這告訴 EF Core: "請幫我在資料庫建立這兩張表！"
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

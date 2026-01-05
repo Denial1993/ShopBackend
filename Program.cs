@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. 從設定檔 (包含 appsettings.json 和 User Secrets) 讀取連線字串
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+
 // 2. 註冊 DbContext，並告訴它用 SQL Server
 builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -15,7 +16,18 @@ builder.Services.AddDbContext<ShopDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
+
+// 這是 .NET 8 取得 Service 的標準寫法
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ShopDbContext>();
+    // 呼叫我們剛剛寫的補貨機
+    DbInitializer.Initialize(context);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -25,6 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 var summaries = new[]
 {

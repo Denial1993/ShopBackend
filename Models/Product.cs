@@ -4,20 +4,28 @@ namespace ShopApi.Models
 {
     public class Product
     {
-        public int Id { get; set; } // 主鍵 (PK)
+        /// <summary>
+        /// 主鍵 (PK)
+        /// </summary>
+        public int Id { get; set; } 
+        /// <summary>
+        /// 商品標題
+        /// </summary>
+        public string Title { get; set; } = string.Empty; 
+        /// <summary>
+        /// 商品描述
+        /// </summary>
+        public string Description { get; set; } = string.Empty;
 
-        public string Title { get; set; } = string.Empty; // 商品標題
-
-        public string Description { get; set; } = string.Empty; // 商品描述
-
-        // 使用 decimal (18,2) 來存錢是最標準的做法，不要用 float/double 會失準
+        //使用 decimal (18,2) 來存錢是最標準的做法，不要用 float/double 會失準
         [Column(TypeName = "decimal(18,2)")] 
         public decimal Price { get; set; }
-
-        public string ImageUrl { get; set; } = string.Empty; // 圖片網址
+        /// <summary>
+        /// 圖片網址
+        /// </summary>
+        public string ImageUrl { get; set; } = string.Empty;
 
         // --- 以下是關聯設定 (Foreign Key) ---
-
         // 這是外鍵 (FK)，對應到 Category 表的 Id
         public int CategoryId { get; set; }
 
