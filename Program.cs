@@ -1,5 +1,9 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ShopApi.Data;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +15,52 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+// --- ⬇️ 新增這段 (設定 JWT 驗證邏輯) ⬇️ ---
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                builder.Configuration.GetSection("Jwt:Key").Value!)),
+            ValidateIssuer = false, // 暫時不檢查發發行者 (簡化練習)
+            ValidateAudience = false // 暫時不檢查接收者
+        };
+    });
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    // 1. 定義安全機制 (告訴 Swagger 我們要用 JWT Bearer)
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization", // Header 的名字
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "請在下方輸入：Bearer {你的Token} (注意 Bearer 後面有空白)"
+    });
+
+    // 2. 套用安全機制 (告訴 Swagger 所有的 API 都受這個保護)
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 builder.Services.AddControllers();
 
@@ -58,6 +104,11 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+// --- ⬇️ 新增這段 (開啟驗證與授權 Middleware) ⬇️ ---
+app.UseAuthentication(); // 先檢查你是誰 (查票)
+app.UseAuthorization();  // 再檢查你能做什麼 (查權限)
+// --- ⬆️ 新增這段 (注意順序！要放在 MapControllers 之前) ⬆️ ---
 
 app.Run();
 
