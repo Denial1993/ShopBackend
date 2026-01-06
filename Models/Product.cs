@@ -28,10 +28,10 @@ namespace ShopApi.Models
         // --- 以下是關聯設定 (Foreign Key) ---
         // 這是外鍵 (FK)，對應到 Category 表的 Id
         public int CategoryId { get; set; }
-
         // 導覽屬性
         // 意思：這是一個「分類」物件。
         // 當我們查商品時，EF Core 可以順便幫我們把「手機」這個分類物件抓進來
         public Category? Category { get; set; }
+        public int Stock {get;set;} = 10; //為了方便測試，預設給 10 個
     }
 }

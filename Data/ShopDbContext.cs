@@ -11,16 +11,14 @@ namespace ShopApi.Data
         public ShopDbContext(DbContextOptions<ShopDbContext> options) : base(options)
         {
         }
-
-        // 以後我們的資料表 (Table) 會定義在這裡
-        // 例如：public DbSet<Product> Products { get; set; }
-        // 目前先留空，等下一階段再來加
-
-        // 這告訴 EF Core: "請幫我在資料庫建立這兩張表！"
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        
+        public DbSet<Order> Orders { get; set; }
+        
+        public DbSet<OrderDetail> OrderDetails { get; set; }
     }
 }

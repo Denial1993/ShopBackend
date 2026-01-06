@@ -4,6 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ShopApi.Data;
 using Microsoft.OpenApi.Models;
+using ShopApi.Services;
+using ShopApi.Validators;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,7 +65,21 @@ builder.Services.AddSwaggerGen(options =>
             new string[] {}
         }
     });
+
+    // --- ⬇️ 新增這段 (載入 XML 註解) ⬇️ ---
+    // 1. 取得 XML 檔案名稱 (通常是 專案名稱.xml)
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    // 2. 組合出完整路徑
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    // 3. 告訴 Swagger 使用它
+    options.IncludeXmlComments(xmlPath);
 });
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+// 2. 註冊 FluentValidation
+builder.Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssemblyContaining<UserDtoValidator>(); // 自動掃描所有 Validator
 
 builder.Services.AddControllers();
 
@@ -82,34 +101,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
-app.MapControllers();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
 
 // --- ⬇️ 新增這段 (開啟驗證與授權 Middleware) ⬇️ ---
 app.UseAuthentication(); // 先檢查你是誰 (查票)
 app.UseAuthorization();  // 再檢查你能做什麼 (查權限)
 // --- ⬆️ 新增這段 (注意順序！要放在 MapControllers 之前) ⬆️ ---
 
+app.MapControllers();
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
