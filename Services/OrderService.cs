@@ -1,25 +1,20 @@
 using System.Security.Claims;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ShopApi.Data;
+using ShopApi.Dtos;
 using ShopApi.Models;
 
 namespace ShopApi.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService(ShopDbContext context, IConfiguration configuration) : IOrderService
     {
-        private readonly ShopDbContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly ShopDbContext _context = context;
+        private readonly IConfiguration _configuration = configuration;
 
-        public OrderService(ShopDbContext context, IConfiguration configuration)
+        public async Task<(bool IsSuccess, string Message, int OrderId)> CheckoutAsync(int userId)
         {
-            _context = context;
-            _configuration = configuration;
-        }
-
-        public async Task<string> Checkout()
-        {
-            var userId = GetUserId();
-
             // A. 撈出購物車 (要包含商品資訊，因為要抓價格)
             var cart = await _context.Carts
                 .Include(c => c.Items)
@@ -28,7 +23,7 @@ namespace ShopApi.Services
 
             if (cart == null || cart.Items.Count == 0)
             {
-                return null;
+                return (false, "購物車是空的", 0);
             }
 
             // B. 建立訂單主檔
@@ -44,7 +39,7 @@ namespace ShopApi.Services
                 // 1. 檢查庫存夠不夠？
                 if (item.Product!.Stock < item.Quantity)
                 {
-                    return null;
+                    return (false, $"商品 '{item.Product.Title}' 庫存不足! ", 0);
                 }
                 // 2. 扣庫存 (直接修改 Product 物件的屬性)
                 // EF Core 會追蹤這個變化，等一下 SaveChanges 時會自動生出 UPDATE SQL
@@ -74,26 +69,52 @@ namespace ShopApi.Services
             // 4. DELETE CartItems (清購物車)
             // 只要其中任何一個失敗 (例如 SQL 連線斷掉)，全部都會回滾 (Rollback)，不會發生「扣了庫存但沒訂單」的慘劇。
             await _context.SaveChangesAsync();
-
-            return Ok(new { Message = "結帳成功", OrderId = order.Id });
+            return (true, "結帳成功", order.Id); // ✅ 回傳成功結果
         }
 
-        public async Task<ActionResult<IEnumerable<OrderDto>>> GetMyOrders()
+        public async Task<List<OrderDto>> GetMyOrdersAsync(int userId)
         {
-            throw new NotImplementedException("還沒好");
-        }
-        
-        public async Task<ActionResult> GetOrderDetail(int orderId)
-        {
-            throw new NotImplementedException("還沒好");
-        }
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            string sql = @"SELECT * FROM Orders WHERE UserId = @UserId ORDER BY CreatedAt DESC";
+            var orders = await conn.QueryAsync<Order>(sql, new { UserId = userId });
 
-        // 小工具：取得 User ID
-        private Task<int> GetUserId()
+            // 直接回傳 List<OrderDto>，不需要包 Ok()
+            return orders.Select(o => new OrderDto
+            {
+                Id = o.Id,
+                UserId = o.UserId,
+                CreatedAt = o.CreatedAt,
+                TotalAmount = o.TotalAmount,
+                Details = new List<OrderDetailDto>()
+            }).ToList();
+        }
+        public async Task<OrderDto?> GetOrderByIdAsync(int orderId, int userId)
         {
-            var idClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            if (idClaim == null) throw new Exception("請重新登入");
-            return int.Parse(idClaim.Value);
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            string sql = @"
+                SELECT * FROM Orders WHERE Id = @Id AND UserId = @UserId;
+                SELECT * FROM OrderDetails WHERE OrderId = @Id;
+            ";
+            using var multi = await conn.QueryMultipleAsync(sql, new { Id = orderId, UserId = userId });
+            var order = await multi.ReadFirstOrDefaultAsync<Order>();
+            if (order == null) return null; // ✅ 找不到就回傳 null，不要回傳 NotFound()
+            var details = await multi.ReadAsync<OrderDetail>();
+            return new OrderDto
+            {
+                Id = order.Id,
+                UserId = order.UserId,
+                CreatedAt = order.CreatedAt,
+                TotalAmount = order.TotalAmount,
+                Details = details.Select(d => new OrderDetailDto
+                {
+                    Id = d.Id,
+                    OrderId = d.OrderId,
+                    ProductId = d.ProductId,
+                    ProductTitle = d.ProductTitle,
+                    Price = d.Price,
+                    Quantity = d.Quantity
+                }).ToList()
+            };
         }
     }
 }
