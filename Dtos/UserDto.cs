@@ -9,13 +9,13 @@ namespace ShopApi.Dtos
         /// <summary>
         /// 使用者的電子信箱(必填)
         /// </summary>
-        /// <example>daniel@test.com</example>
+        /// <example>denial6666@gmail.com</example>
         [Required]
         public required string Email { get; set; } 
         /// <summary>
         /// 密碼 (至少6碼，需包含大小寫英文與數字)
         /// </summary>
-        ///<example>P@ssw0rd123</example>
+        ///<example>1qaz@WSX3edc</example>
         [Required]
         public required string Password { get; set; } 
     }
