@@ -26,7 +26,11 @@ namespace ShopApi.Controllers
         }
 
         // GET: api/Product/5
-        // 查詢單一商品詳情
+        /// <summary>
+        /// 查詢單一商品詳情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {

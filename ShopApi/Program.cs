@@ -117,7 +117,9 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); //這行會幫我倒回去 https ，先註解掉
+
+
 app.UseCors("AllowVueApp"); // 👈 啟用剛剛設定的策略
 
 // --- ⬇️ 新增這段 (開啟驗證與授權 Middleware) ⬇️ ---

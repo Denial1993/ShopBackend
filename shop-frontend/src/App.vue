@@ -1,50 +1,70 @@
 <script setup>
-// 這裡是寫 JavaScript 邏輯的地方 (目前還是空的)
+import { onMounted } from 'vue';
+import { authStore } from './store.js'; // 👈 引入 store
+import { useRouter } from 'vue-router'; // 引入 router 做登出跳轉
+const router = useRouter();
+
+// 網頁一打開，就檢查登入狀態
+onMounted(() => {
+  authStore.checkLogin();
+});
+
+// 登出按鈕的功能
+const handleLogout = () => {
+  if (confirm("確定要登出嗎？")) {
+    authStore.logout();
+    router.push('/'); // 登出後回首頁
+  }
+}
 </script>
 
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm fixed-top">
     <div class="container">
-      <a class="navbar-brand fw-bold fs-3" href="#">ShopDemo</a>
-      
+      <router-link class="navbar-brand fw-bold fs-3" to="/">Ubtiv</router-link>
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ms-auto align-items-center">
           <li class="nav-item">
-            <a class="nav-link active" href="#">首頁</a>
+            <router-link class="nav-link" to="/">首頁</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">最新商品</a>
+          <li class="nav-item" v-if="!authStore.isLoggedIn">
+            <router-link class="nav-link" to="/login">登入 / 註冊</router-link>
           </li>
+
+          <template v-else>
+            <li class="nav-item">
+              <span class="nav-link fw-bold text-primary">
+                Hi, {{ authStore.userEmail }} 您好!
+              </span>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link text-danger" @click.prevent="handleLogout">登出</a>
+            </li>
+          </template>
           <li class="nav-item">
-            <a class="nav-link" href="#">登入 / 註冊</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn btn-primary text-white ms-2 rounded-pill px-4" href="#">
-              購物車 (0)
-            </a>
+            <router-link to="/cart" class="nav-link btn btn-primary text-white ms-3 rounded-pill px-4">
+              購物車
+            </router-link>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <div class="container" style="margin-top: 80px;">
-    <h2 class="text-center my-4">熱銷商品</h2>
-    
-    <div class="text-center">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <p class="mt-2">商品載入中...</p>
-    </div>
-
+  <div style="margin-top: 80px;">
+    <router-view></router-view>
   </div>
+
 </template>
 
-<style scoped>
-/* 這裡寫額外的 CSS，目前先留空 */
+<style>
+/* 全域樣式：讓背景不要那麼死白，稍微灰一點點更有質感 */
+body {
+  background-color: #f8f9fa;
+}
 </style>
