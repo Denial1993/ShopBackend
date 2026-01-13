@@ -46,6 +46,11 @@ const handleLogout = () => {
               <a href="#" class="nav-link text-danger" @click.prevent="handleLogout">登出</a>
             </li>
           </template>
+          
+          <li class="nav-item">
+            <router-link to="/orders" class="nav-link">我的訂單</router-link>
+          </li>
+
           <li class="nav-item">
             <router-link to="/cart" class="nav-link btn btn-primary text-white ms-3 rounded-pill px-4">
               購物車

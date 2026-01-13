@@ -5,6 +5,28 @@ import { useRouter } from 'vue-router';
 
 const cartItems = ref([]);
 const router = useRouter();
+const checkout = async () => {
+  if (cartItems.value.length === 0) {
+    alert("購物車是空的，不能結帳喔！");
+    return;
+  }
+
+  if (!confirm(`確定要結帳嗎？總金額 NT$ ${totalPrice.value}`)) return;
+
+  try {
+    // 呼叫你的結帳 API
+    await axios.post('http://localhost:5168/api/Order/checkout');
+    
+    alert("🎉 結帳成功！感謝您的購買！");
+    
+    // 結帳完購物車應該清空了，我們跳轉去「我的訂單」頁面看結果
+    router.push('/orders'); 
+
+  } catch (error) {
+    console.error(error);
+    alert("結帳失敗，請稍後再試");
+  }
+};
 
 // 計算總金額 (Vue 的 computed 超好用，資料變了自動重算)
 const totalPrice = computed(() => {
@@ -91,7 +113,7 @@ onMounted(() => {
       <div class="card border-0 bg-light mt-4">
         <div class="card-body d-flex justify-content-between align-items-center">
           <h4 class="fw-bold mb-0">總金額： <span class="text-danger">NT$ {{ totalPrice }}</span></h4>
-          <button class="btn btn-dark btn-lg px-5">前往結帳</button>
+          <button @click="checkout" class="btn btn-dark btn-lg px-5">前往結帳</button>
         </div>
       </div>
     </div>
