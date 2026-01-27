@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router'; // 👈 用這個抓網址上的 ID
+import { formatPrice } from '../utils/format.js'; // 👈 引入
 
 const route = useRoute();
 const order = ref(null); // 用來放訂單資料
@@ -40,7 +41,7 @@ onMounted(() => {
       <div class="card mb-4 border-0 shadow-sm bg-light">
         <div class="card-body">
             <p><strong>下單時間：</strong> {{ new Date(order.createdAt).toLocaleString() }}</p>
-            <p class="mb-0"><strong>訂單總額：</strong> <span class="text-danger fw-bold fs-4">NT$ {{ order.totalAmount }}</span></p>
+            <p class="mb-0"><strong>訂單總額：</strong> <span class="text-danger fw-bold fs-4">NT$ {{ formatPrice(order.totalAmount) }}</span></p>
         </div>
       </div>
 
@@ -57,9 +58,9 @@ onMounted(() => {
         <tbody>
           <tr v-for="item in order.details" :key="item.id">
             <td>{{ item.productTitle }}</td>
-            <td>{{ item.price }}</td>
+            <td>{{ formatPrice(item.price) }}</td>
             <td>x {{ item.quantity }}</td>
-            <td>{{ item.price * item.quantity }}</td>
+            <td>{{ formatPrice(item.price * item.quantity) }}</td>
           </tr>
         </tbody>
       </table>

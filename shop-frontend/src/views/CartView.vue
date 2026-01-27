@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { formatPrice } from '../utils/format.js'; // 👈 引入
 
 const cartItems = ref([]);
 const router = useRouter();
@@ -95,11 +96,11 @@ onMounted(() => {
                     <span class="fw-bold">{{ item.productTitle }}</span>
                 </div>
               </td>
-              <td>NT$ {{ item.price }}</td>
+              <td>NT$ {{ formatPrice(item.price) }}</td>
               <td>
                 x {{ item.quantity }}
               </td>
-              <td class="fw-bold text-danger">NT$ {{ item.price * item.quantity }}</td>
+              <td class="fw-bold text-danger">NT$ {{ formatPrice(item.price * item.quantity) }}</td>
               <td>
                 <button @click="removeItem(item.id)" class="btn btn-sm btn-outline-danger">
                   <span class="fs-6">×</span>
@@ -112,7 +113,9 @@ onMounted(() => {
 
       <div class="card border-0 bg-light mt-4">
         <div class="card-body d-flex justify-content-between align-items-center">
-          <h4 class="fw-bold mb-0">總金額： <span class="text-danger">NT$ {{ totalPrice }}</span></h4>
+          <h4 class="fw-bold mb-0">總金額： <span class="text-danger">NT$ {{ formatPrice(totalPrice) }}</span></h4>
+
+          
           <button @click="checkout" class="btn btn-dark btn-lg px-5">前往結帳</button>
         </div>
       </div>

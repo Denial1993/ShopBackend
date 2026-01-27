@@ -9,6 +9,7 @@ namespace ShopApi.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now; // 什麼時候買的
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; } // 總金額 (當時結帳的錢)
-        public List<OrderDetail> Details { get; set; } = new List<OrderDetail>();
+        public string Status { get; set; } = "Unpaid";//付款狀態
+        public List<OrderDetail> Details { get; set; } = [];
     }
 }

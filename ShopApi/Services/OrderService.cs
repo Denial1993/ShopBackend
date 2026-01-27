@@ -85,6 +85,7 @@ namespace ShopApi.Services
                 UserId = o.UserId,
                 CreatedAt = o.CreatedAt,
                 TotalAmount = o.TotalAmount,
+                Status = o.Status,                
                 Details = new List<OrderDetailDto>()
             }).ToList();
         }

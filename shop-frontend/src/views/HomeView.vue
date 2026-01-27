@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { authStore } from '../store.js'; // 引入 Store 檢查登入狀態
 import { useRouter } from 'vue-router';  // 引入 Router
+import { formatPrice } from '../utils/format.js';
 
 const router = useRouter();
 const products = ref([]);
@@ -70,7 +71,7 @@ onMounted(() => {
                     <div class="card-body d-flex flex-column text-center">
                         <h5 class="card-title fs-6">{{ item.title }}</h5>
                         <p class="text-muted small mb-2">{{ item.categoryName }}</p>
-                        <h5 class="fw-bold text-danger mt-auto">NT$ {{ item.price }}</h5>
+                        <h5 class="fw-bold text-danger mt-auto"> NT$ {{ formatPrice(item.price) }}</h5>
 
                         <button @click="addToCart(item.id)" class="btn btn-outline-dark w-100 mt-2 rounded-0">
                             加入購物車

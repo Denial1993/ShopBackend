@@ -22,6 +22,11 @@ namespace ShopApi.Dtos
         /// </summary>
         public decimal TotalAmount { get; set; } // 總金額 (當時結帳的錢)
         /// <summary>
+        /// 付款狀態
+        /// </summary>
+        /// <example>未付款</example>
+        public string Status { get; set; } = "Unpaid";
+        /// <summary>
         /// 訂單明細清單
         /// </summary>
         public List<OrderDetailDto> Details { get; set; } = [];
