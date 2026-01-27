@@ -11,7 +11,7 @@ const isLoading = ref(true);
 
 const fetchProducts = async () => {
     try {
-        const response = await axios.get('http://localhost:5168/api/Product');
+        const response = await axios.get('http://localhost:5000/api/Product');
         products.value = response.data;
     } catch (error) {
         console.error(error);
@@ -33,7 +33,7 @@ const addToCart = async (productId) => {
     // 2. 發送 API
     try {
         // 根據你的 Swagger POST /api/Cart 需要傳送 productId 和 quantity
-        await axios.post('http://localhost:5168/api/Cart', {
+        await axios.post('http://localhost:5000/api/Cart', {
             productId: productId,
             quantity: 1 // 預設加 1 個
         });

@@ -14,7 +14,7 @@ const loginData = ref({
 const handleLogin = async () => {
   try {
     // 記得確認你的 Port (5168 or 7004)
-    const response = await axios.post('http://localhost:5168/api/Auth/login', loginData.value);
+    const response = await axios.post('http://localhost:5000/api/Auth/login', loginData.value);
 
     const token = response.data;
     // 👇 2. 改用 store 的方法登入 (這樣 App.vue 才會知道)

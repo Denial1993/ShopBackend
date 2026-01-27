@@ -27,7 +27,7 @@ const handleRegister = async () => {
             password: registerData.value.password
         };
 
-        await axios.post('http://localhost:5168/api/Auth/register', payload);
+        await axios.post('http://localhost:5000/api/Auth/register', payload);
 
         // 3. 註冊成功，引導去登入
         alert("🎉 註冊成功！請使用剛註冊的帳號登入。");

@@ -12,13 +12,16 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. 從設定檔 (包含 appsettings.json 和 User Secrets) 讀取連線字串
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// // 1. 從設定檔 (包含 appsettings.json 和 User Secrets) 讀取連線字串
+// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// // 2. 註冊 DbContext，並告訴它用 SQL Server
+// builder.Services.AddDbContext<ShopDbContext>(options =>
+//     options.UseSqlServer(connectionString));
 
-
-// 2. 註冊 DbContext，並告訴它用 SQL Server
+// 找到原本的 UseSqlServer，改成 UseNpgsql
 builder.Services.AddDbContext<ShopDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 // --- ⬇️ 新增這段 (設定 JWT 驗證邏輯) ⬇️ ---
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

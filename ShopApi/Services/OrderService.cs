@@ -83,9 +83,9 @@ namespace ShopApi.Services
             {
                 Id = o.Id,
                 UserId = o.UserId,
-                CreatedAt = o.CreatedAt,
+                CreatedAt = o.CreatedAt.ToLocalTime(),
                 TotalAmount = o.TotalAmount,
-                Status = o.Status,                
+                Status = o.Status,
                 Details = new List<OrderDetailDto>()
             }).ToList();
         }
@@ -104,7 +104,7 @@ namespace ShopApi.Services
             {
                 Id = order.Id,
                 UserId = order.UserId,
-                CreatedAt = order.CreatedAt,
+                CreatedAt = order.CreatedAt.ToLocalTime(),
                 TotalAmount = order.TotalAmount,
                 Details = details.Select(d => new OrderDetailDto
                 {
