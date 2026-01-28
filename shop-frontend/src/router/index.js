@@ -21,7 +21,12 @@ const router = createRouter({
       path: "/product/:id",
       name: "product-detail",
       component: ProductDetailView,
-    }, // :id 是變數
+    },
+    {
+      path: "/admin/products",
+      name: "admin-products",
+      component: () => import("../views/AdminProductsView.vue"),
+    },
   ],
 });
 

@@ -37,6 +37,9 @@ const handleLogout = () => {
           </li>
 
           <template v-else>
+            <li class="nav-item" v-if="authStore.userRole === 'Admin' || authStore.userRole === 'Staff'">
+              <router-link class="nav-link text-success fw-bold" to="/admin/products">後台管理</router-link>
+            </li>
             <li class="nav-item">
               <span class="nav-link fw-bold text-primary">
                 Hi, {{ authStore.userEmail }} 您好!

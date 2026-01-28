@@ -6,7 +6,8 @@ namespace ShopApi.Models
         public string Email { get; set; } = string.Empty; // 帳號用 Email 比較標準
         public string PasswordHash { get; set; } = string.Empty; // 絕對不能存明碼！
 
-        // 角色 (例如: "Admin", "User")，之後可以做權限管理
-        public string Role { get; set; } = "User"; 
+        // 角色關聯 (1=系統管理者, 2=後台管理者, 3=一般使用者)
+        public int RoleId { get; set; } = 3;
+        public Role? Role { get; set; }
     }
 }

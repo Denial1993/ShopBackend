@@ -26,6 +26,7 @@ namespace ShopApi.Services
             {
                 MerchantID = merchantId,
                 MerchantTradeNo = tradeNo,
+                CustomField1 = orderId,
                 MerchantTradeDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"),
                 PaymentType = "aio",
                 TotalAmount = amount.ToString(),
@@ -59,19 +60,21 @@ namespace ShopApi.Services
                 { "ReturnURL", request.ReturnURL },
                 { "ChoosePayment", request.ChoosePayment },
                 { "EncryptType", request.EncryptType },
-                { "ClientBackURL", request.ClientBackURL }
+                { "ClientBackURL", request.ClientBackURL },
+                // 👇 新增這一行！加密如果漏了它，綠界會噴錯
+        { "CustomField1", request.CustomField1 }
             };
 
             // 2. 串接成字串: HashKey=xxx&ItemName=yyy...
             var sortedKeys = parameters.Keys.OrderBy(k => k).ToList();
             var sb = new StringBuilder();
             sb.Append($"HashKey={hashKey}");
-            
+
             foreach (var key in sortedKeys)
             {
                 sb.Append($"&{key}={parameters[key]}");
             }
-            
+
             sb.Append($"&HashIV={hashIV}");
 
             // 3. URL Encode

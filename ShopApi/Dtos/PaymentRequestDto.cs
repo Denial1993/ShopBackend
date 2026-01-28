@@ -14,5 +14,6 @@ namespace ShopApi.Dtos
         public string EncryptType { get; set; }
         public string ClientBackURL { get; set; }
         public string CheckMacValue { get; set; }
+        public string CustomField1 { get; set; }
     }
 }

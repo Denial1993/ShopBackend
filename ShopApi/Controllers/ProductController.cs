@@ -9,7 +9,7 @@ namespace ShopApi.Controllers
     public class ProductController(IProductService productService) : ControllerBase
     {
         private readonly IProductService _productService = productService;
-        
+
         // GET: api/Product
         // 參數說明：
         // keyword: 搜尋關鍵字 (預設空)
@@ -19,9 +19,9 @@ namespace ShopApi.Controllers
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(
             [FromQuery] string? keyword,
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 6)
+            [FromQuery] int pageSize = 100)
         {
-            var products = await _productService.GetProductsAsync(keyword, page,pageSize);
+            var products = await _productService.GetProductsAsync(keyword, page, pageSize);
             return Ok(products);
         }
 

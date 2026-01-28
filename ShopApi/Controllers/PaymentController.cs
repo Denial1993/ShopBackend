@@ -54,36 +54,25 @@ namespace ShopApi.Controllers
         {
             // 1. 接收綠界傳來的關鍵參數
             var rtnCode = form["RtnCode"];           // 1 代表成功
-            var merchantTradeNo = form["MerchantTradeNo"]; // 我們的訂單編號 (例如: 213857)
+                                                     // var merchantTradeNo = form["MerchantTradeNo"]; // 我們的訂單編號 (例如: 213857)
+                                                     // ✅ 修改：從 CustomField1 拿真正的 ID
+            var targetOrderId = form["CustomField1"];
             var tradeAmt = form["TradeAmt"];         // 交易金額
             var paymentDate = form["PaymentDate"];   // 付款時間
 
-            if (rtnCode == "1")
+            if (rtnCode == "1" && int.TryParse(targetOrderId, out int orderId))
             {
-                // 1. 解析 OrderId
-                // 如果你之前是用 "純數字" 當 MerchantTradeNo，直接轉 int
-                if (int.TryParse(merchantTradeNo, out int orderId))
+                // 現在 orderId 真的會是 6 了！
+                var order = await _context.Orders.FindAsync(orderId);
+
+                if (order != null)
                 {
-                    // 2. 查資料庫
-                    var order = await _context.Orders.FindAsync(orderId);
-
-                    if (order != null)
-                    {
-                        // 3. 修改狀態 (假設你有 Status 欄位)
-                        // 如果你的 Entity 沒有 Status 欄位，現在是個好時機加上去 (public string Status { get; set; })
-                        order.Status = "Paid";
-
-                        // 如果沒有 Status 欄位，暫時用 Console 代表
-                        // Console.WriteLine($"訂單 {orderId} 已付款，寫入 DB!"); 
-
-                        await _context.SaveChangesAsync();
-                        Console.WriteLine($"✅ 資料庫更新成功：訂單 #{orderId} -> Paid");
-                    }
+                    order.Status = "Paid";
+                    await _context.SaveChangesAsync(); // EF Core 這裡會自動處理雙引號，不用擔心
+                    return Content("1|OK", "text/plain");
                 }
-                return Content("1|OK", "text/plain");
             }
-            Console.WriteLine("❌ 付款失敗或 RtnCode != 1");
-            return BadRequest("付款失敗");
+            return BadRequest("查無訂單");
         }
 
         // 🛠️ 小工具：把參數轉成 HTML Form
@@ -106,6 +95,7 @@ namespace ShopApi.Controllers
             sb.Append($"<input type='hidden' name='ChoosePayment' value='{request.ChoosePayment}' />");
             sb.Append($"<input type='hidden' name='EncryptType' value='{request.EncryptType}' />");
             sb.Append($"<input type='hidden' name='ClientBackURL' value='{request.ClientBackURL}' />");
+            sb.Append($"<input type='hidden' name='CustomField1' value='{request.CustomField1}' />");
             sb.Append($"<input type='hidden' name='CheckMacValue' value='{request.CheckMacValue}' />"); // 檢查碼
 
             sb.Append("</form>");

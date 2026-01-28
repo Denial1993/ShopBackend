@@ -87,7 +87,7 @@ onMounted(() => {
                 </button>
                 <router-link to="/" class="btn btn-outline-secondary btn-lg">
                     回首頁
-                </router-link>【
+                </router-link>
             </div>
         </div>
       </div>

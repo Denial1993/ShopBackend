@@ -1,10 +1,11 @@
 using System.Security.Claims;
 using Dapper;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ShopApi.Data;
 using ShopApi.Dtos;
 using ShopApi.Models;
+using Microsoft.Data.SqlClient;
+using Npgsql;
 
 namespace ShopApi.Services
 {
@@ -74,8 +75,8 @@ namespace ShopApi.Services
 
         public async Task<List<OrderDto>> GetMyOrdersAsync(int userId)
         {
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-            string sql = @"SELECT * FROM Orders WHERE UserId = @UserId ORDER BY CreatedAt DESC";
+            using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            string sql = @"SELECT * FROM ""Orders"" WHERE ""UserId"" = @UserId ORDER BY ""CreatedAt"" DESC";
             var orders = await conn.QueryAsync<Order>(sql, new { UserId = userId });
 
             // 直接回傳 List<OrderDto>，不需要包 Ok()
@@ -91,10 +92,10 @@ namespace ShopApi.Services
         }
         public async Task<OrderDto?> GetOrderByIdAsync(int orderId, int userId)
         {
-            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             string sql = @"
-                SELECT * FROM Orders WHERE Id = @Id AND UserId = @UserId;
-                SELECT * FROM OrderDetails WHERE OrderId = @Id;
+                SELECT * FROM ""Orders"" WHERE ""Id"" = @Id AND ""UserId"" = @UserId;
+                SELECT * FROM ""OrderDetails"" WHERE ""OrderId"" = @Id;
             ";
             using var multi = await conn.QueryMultipleAsync(sql, new { Id = orderId, UserId = userId });
             var order = await multi.ReadFirstOrDefaultAsync<Order>();

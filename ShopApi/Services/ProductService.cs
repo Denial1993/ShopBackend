@@ -8,7 +8,7 @@ namespace ShopApi.Services
     {
         private readonly ShopDbContext _context = context;
 
-        public async Task<IEnumerable<ProductDto>> GetProductsAsync(string? keyword, int page = 1, int pageSize = 6)
+        public async Task<IEnumerable<ProductDto>> GetProductsAsync(string? keyword, int page = 1, int pageSize = 100)
         {
             // 1. 準備查詢 (尚未對資料庫發送請求，只是在組 SQL)
             var query = _context.Products
@@ -34,7 +34,8 @@ namespace ShopApi.Services
                     Title = p.Title,
                     Price = p.Price,
                     ImageUrl = p.ImageUrl,
-                    CategoryName = p.Category != null ? p.Category.Name : "無分類"
+                    CategoryName = p.Category != null ? p.Category.Name : "無分類",
+                    Description = p.Description
                 })
                 .ToListAsync(); // 這裡才會真正去資料庫撈資料 (執行 SQL)
 
@@ -55,7 +56,8 @@ namespace ShopApi.Services
                 Title = product.Title,
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
-                CategoryName = product.Category?.Name ?? "無分類"
+                CategoryName = product.Category?.Name ?? "無分類",
+                Description = product.Description
             };
             return dto;
         }

@@ -4,6 +4,7 @@ import { reactive } from 'vue';
 export const authStore = reactive({
   isLoggedIn: false,
   userEmail: '',
+  userRole: '',
 
   // 初始化：一開網頁就檢查有沒有 Token
   checkLogin() {
@@ -12,9 +13,19 @@ export const authStore = reactive({
     if (token) {
       this.isLoggedIn = true;
       this.userEmail = email || '會員';
+
+      // 解析 JWT 取得 Role
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        // ClaimTypes.Role 在 JWT 中通常對應到 "role" 或 "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        this.userRole = payload["role"] || payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || '';
+      } catch (e) {
+        console.error("Token 解析失敗", e);
+      }
     } else {
       this.isLoggedIn = false;
       this.userEmail = '';
+      this.userRole = '';
     }
   },
 

@@ -35,7 +35,7 @@ namespace ShopApi.Services
             {
                 Email = request.Email,
                 PasswordHash = passwordHash,
-                Role = "User" // 預設是一般會員
+                RoleId = 3 // 預設是一般會員
             };
 
             _context.Users.Add(user);
@@ -43,14 +43,16 @@ namespace ShopApi.Services
 
             return "註冊成功";
         }
-        
+
         public async Task<string?> LoginAsync(UserDto request)
-        {            
-             // 1. 找使用者
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        {
+            // 1. 找使用者
+            var user = await _context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
-               return null; // 👈 直接回傳 null，不要用 BadRequest
+                return null; // 👈 直接回傳 null，不要用 BadRequest
             }
             // 驗證成功，發 Token
             return CreateToken(user);
@@ -67,7 +69,7 @@ namespace ShopApi.Services
             {
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // 記住 ID 很重要！
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role?.Name ?? "User")
             };
 
             // 從 User Secrets 拿金鑰
