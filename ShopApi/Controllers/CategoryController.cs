@@ -16,8 +16,10 @@ namespace ShopApi.Controllers
             _context = context;
         }
 
-        // GET: api/Category
-        // 取得所有分類列表
+        /// <summary>
+        /// 取得所有分類列表
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {

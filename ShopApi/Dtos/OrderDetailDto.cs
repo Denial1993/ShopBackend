@@ -31,5 +31,9 @@ namespace ShopApi.Dtos
         /// 訂單數量
         /// </summary>
         public int Quantity { get; set; }
+        /// <summary>
+        /// 產品圖片
+        /// </summary>
+        public string? ImageUrl { get; set; }
     }
 }

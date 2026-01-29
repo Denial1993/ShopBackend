@@ -31,6 +31,10 @@ namespace ShopApi.Dtos
         [Required]
         public int Quantity { get; set; }
         /// <summary>
+        /// 購物車明細_產品圖片
+        /// </summary>
+        public string ImageUrl { get; set; } = string.Empty;
+        /// <summary>
         /// 小計 (單價 * 數量)
         /// </summary>
         [Required]

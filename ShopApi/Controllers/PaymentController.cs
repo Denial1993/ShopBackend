@@ -20,8 +20,11 @@ namespace ShopApi.Controllers
             _context = context;
         }
 
-        // POST: api/Payment/Checkout
-        // 前端按下「前往付款」時呼叫這支
+        /// <summary>
+        /// 前端按下「前往付款」時呼叫這支
+        /// </summary>
+        /// <param name="dto">訂單 ID</param>
+        /// <returns></returns>
         [HttpPost("Checkout")]
         public async Task<IActionResult> Checkout([FromBody] CheckoutDto dto)
         {
@@ -47,8 +50,12 @@ namespace ShopApi.Controllers
         }
 
         // POST: api/Payment/Callback
-        // 綠界刷卡成功後，會偷偷呼叫這支 API (Server 對 Server)
-        // ⚠️ 注意：這支 API 本機測不到，需要用 ngrok
+        /// <summary>
+        /// 綠界刷卡成功後，會偷偷呼叫這支 API (Server 對 Server)
+        /// ⚠️ 注意：這支 API 本機測不到，需要用 ngrok
+        /// </summary>
+        /// <param name="form">綠界傳來的表單</param>
+        /// <returns></returns>
         [HttpPost("Callback")]
         public async Task<IActionResult> Callback([FromForm] IFormCollection form)
         {
@@ -75,7 +82,11 @@ namespace ShopApi.Controllers
             return BadRequest("查無訂單");
         }
 
-        // 🛠️ 小工具：把參數轉成 HTML Form
+        /// <summary>
+        /// 小工具：把參數轉成 HTML Form
+        /// </summary>
+        /// <param name="request">綠界參數</param>
+        /// <returns></returns>
         private string GenerateHtmlForm(PaymentRequestDto request)
         {
             var sb = new StringBuilder();
@@ -108,7 +119,9 @@ namespace ShopApi.Controllers
         }
     }
 
-    // 簡單的 DTO，用來接前端傳來的 OrderId
+    /// <summary>
+    /// 簡單的 DTO，用來接前端傳來的 OrderId
+    /// </summary>
     public class CheckoutDto
     {
         public int OrderId { get; set; }

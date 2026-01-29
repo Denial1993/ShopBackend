@@ -56,11 +56,18 @@ onMounted(() => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in order.details" :key="item.id">
-            <td>{{ item.productTitle }}</td>
-            <td>{{ formatPrice(item.price) }}</td>
+          <tr v-for="item in order.details" :key="item.id" class="align-middle">
+            <td>
+              <div class="d-flex align-items-center">
+                <img :src="item.imageUrl ? `/images/${item.imageUrl}` : 'https://placehold.co/80'" 
+                     class="rounded shadow-sm me-3" 
+                     style="width: 60px; height: 60px; object-fit: cover;">
+                <span>{{ item.productTitle }}</span>
+              </div>
+            </td>
+            <td>NT$ {{ formatPrice(item.price) }}</td>
             <td>x {{ item.quantity }}</td>
-            <td>{{ formatPrice(item.price * item.quantity) }}</td>
+            <td class="fw-bold">NT$ {{ formatPrice(item.price * item.quantity) }}</td>
           </tr>
         </tbody>
       </table>

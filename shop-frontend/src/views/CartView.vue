@@ -91,9 +91,12 @@ onMounted(() => {
             <tr v-for="item in cartItems" :key="item.id">
               <td>
                 <div class="d-flex align-items-center">
-                    <img :src="item.imageUrl ? `/images/${item.imageUrl}` : 'https://placehold.co/50'" 
-                         width="50" class="me-3">
-                    <span class="fw-bold">{{ item.productTitle }}</span>
+                    <img :src="item.imageUrl ? `/images/${item.imageUrl}` : 'https://placehold.co/100'" 
+                         class="rounded-3 shadow-sm me-3"
+                         style="width: 80px; height: 80px; object-fit: cover;">
+                    <div class="d-flex flex-column">
+                        <span class="fw-bold fs-5">{{ item.productTitle }}</span>
+                    </div>
                 </div>
               </td>
               <td>NT$ {{ formatPrice(item.price) }}</td>

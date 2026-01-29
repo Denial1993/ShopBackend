@@ -69,7 +69,8 @@ namespace ShopApi.Services
             {
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // 記住 ID 很重要！
-                new Claim(ClaimTypes.Role, user.Role?.Name ?? "User")
+                new Claim(ClaimTypes.Role, user.Role?.Name ?? "User"),
+                new Claim("fullName", user.FullName ?? "") // 👈 加入姓名
             };
 
             // 從 User Secrets 拿金鑰

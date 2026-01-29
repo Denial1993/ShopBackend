@@ -10,11 +10,13 @@ namespace ShopApi.Controllers
     {
         private readonly IProductService _productService = productService;
 
-        // GET: api/Product
-        // 參數說明：
-        // keyword: 搜尋關鍵字 (預設空)
-        // page: 第幾頁 (預設 1)
-        // pageSize: 一頁幾筆 (預設 6)
+        /// <summary>
+        /// 取得所有商品列表
+        /// </summary>
+        /// <param name="keyword">搜尋關鍵字 (預設空)</param>
+        /// <param name="page">第幾頁 (預設 1)</param>
+        /// <param name="pageSize">一頁幾筆 (預設 6)</param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(
             [FromQuery] string? keyword,
@@ -25,11 +27,10 @@ namespace ShopApi.Controllers
             return Ok(products);
         }
 
-        // GET: api/Product/5
         /// <summary>
         /// 查詢單一商品詳情
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">商品 ID</param>
         /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProduct(int id)

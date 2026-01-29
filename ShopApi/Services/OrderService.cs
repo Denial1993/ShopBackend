@@ -43,7 +43,6 @@ namespace ShopApi.Services
                     return (false, $"商品 '{item.Product.Title}' 庫存不足! ", 0);
                 }
                 // 2. 扣庫存 (直接修改 Product 物件的屬性)
-                // EF Core 會追蹤這個變化，等一下 SaveChanges 時會自動生出 UPDATE SQL
                 item.Product.Stock -= item.Quantity;
 
                 // 3. 建立訂單明細
@@ -59,18 +58,11 @@ namespace ShopApi.Services
             // D. 加入訂單到資料庫
             _context.Orders.Add(order);
 
-            // E. 清空購物車 (這一步很重要！)
+            // E. 清空購物車
             _context.CartItems.RemoveRange(cart.Items);
 
-            // F. 存檔 (EF Core 會自動把上述所有動作包成一個 Transaction，要嘛全成功，要嘛全失敗)
-            // 這裡會同時執行：
-            // 1. INSERT Order (新增訂單)
-            // 2. INSERT OrderDetails (新增明細)
-            // 3. UPDATE Products (扣庫存) <--- 新增的動作
-            // 4. DELETE CartItems (清購物車)
-            // 只要其中任何一個失敗 (例如 SQL 連線斷掉)，全部都會回滾 (Rollback)，不會發生「扣了庫存但沒訂單」的慘劇。
             await _context.SaveChangesAsync();
-            return (true, "結帳成功", order.Id); // ✅ 回傳成功結果
+            return (true, "結帳成功", order.Id);
         }
 
         public async Task<List<OrderDto>> GetMyOrdersAsync(int userId)
@@ -79,7 +71,6 @@ namespace ShopApi.Services
             string sql = @"SELECT * FROM ""Orders"" WHERE ""UserId"" = @UserId ORDER BY ""CreatedAt"" DESC";
             var orders = await conn.QueryAsync<Order>(sql, new { UserId = userId });
 
-            // 直接回傳 List<OrderDto>，不需要包 Ok()
             return orders.Select(o => new OrderDto
             {
                 Id = o.Id,
@@ -90,23 +81,28 @@ namespace ShopApi.Services
                 Details = new List<OrderDetailDto>()
             }).ToList();
         }
+
         public async Task<OrderDto?> GetOrderByIdAsync(int orderId, int userId)
         {
             using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
             string sql = @"
                 SELECT * FROM ""Orders"" WHERE ""Id"" = @Id AND ""UserId"" = @UserId;
-                SELECT * FROM ""OrderDetails"" WHERE ""OrderId"" = @Id;
+                SELECT od.*, p.""ImageUrl"" 
+                FROM ""OrderDetails"" od
+                LEFT JOIN ""Products"" p ON od.""ProductId"" = p.""Id""
+                WHERE od.""OrderId"" = @Id;
             ";
             using var multi = await conn.QueryMultipleAsync(sql, new { Id = orderId, UserId = userId });
             var order = await multi.ReadFirstOrDefaultAsync<Order>();
-            if (order == null) return null; // ✅ 找不到就回傳 null，不要回傳 NotFound()
-            var details = await multi.ReadAsync<OrderDetail>();
+            if (order == null) return null;
+            var details = await multi.ReadAsync<dynamic>();
             return new OrderDto
             {
                 Id = order.Id,
                 UserId = order.UserId,
                 CreatedAt = order.CreatedAt.ToLocalTime(),
                 TotalAmount = order.TotalAmount,
+                Status = order.Status,
                 Details = details.Select(d => new OrderDetailDto
                 {
                     Id = d.Id,
@@ -114,7 +110,66 @@ namespace ShopApi.Services
                     ProductId = d.ProductId,
                     ProductTitle = d.ProductTitle,
                     Price = d.Price,
-                    Quantity = d.Quantity
+                    Quantity = d.Quantity,
+                    ImageUrl = d.ImageUrl
+                }).ToList()
+            };
+        }
+
+        public async Task<List<AdminOrderDto>> GetAllOrdersAsync()
+        {
+            using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            string sql = @"
+                SELECT o.*, u.""Email"" as ""UserEmail"", u.""FullName"" as ""UserFullName""
+                FROM ""Orders"" o
+                JOIN ""Users"" u ON o.""UserId"" = u.""Id""
+                ORDER BY o.""CreatedAt"" DESC";
+
+            var orders = await conn.QueryAsync<dynamic>(sql);
+
+            return orders.Select(o => new AdminOrderDto
+            {
+                Id = (int)o.Id,
+                UserId = (int)o.UserId,
+                CreatedAt = ((DateTime)o.CreatedAt).ToLocalTime(),
+                TotalAmount = (decimal)o.TotalAmount,
+                Status = (string)o.Status,
+                UserEmail = (string)o.UserEmail,
+                UserFullName = (string)o.UserFullName,
+                Details = new List<OrderDetailDto>()
+            }).ToList();
+        }
+
+        public async Task<OrderDto?> GetOrderByIdAsync(int orderId)
+        {
+            using var conn = new NpgsqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            string sql = @"
+                SELECT * FROM ""Orders"" WHERE ""Id"" = @Id;
+                SELECT od.*, p.""ImageUrl"" 
+                FROM ""OrderDetails"" od
+                LEFT JOIN ""Products"" p ON od.""ProductId"" = p.""Id""
+                WHERE od.""OrderId"" = @Id;
+            ";
+            using var multi = await conn.QueryMultipleAsync(sql, new { Id = orderId });
+            var order = await multi.ReadFirstOrDefaultAsync<Order>();
+            if (order == null) return null;
+            var details = await multi.ReadAsync<dynamic>();
+            return new OrderDto
+            {
+                Id = order.Id,
+                UserId = order.UserId,
+                CreatedAt = order.CreatedAt.ToLocalTime(),
+                TotalAmount = order.TotalAmount,
+                Status = order.Status,
+                Details = details.Select(d => new OrderDetailDto
+                {
+                    Id = d.Id,
+                    OrderId = d.OrderId,
+                    ProductId = d.ProductId,
+                    ProductTitle = d.ProductTitle,
+                    Price = d.Price,
+                    Quantity = d.Quantity,
+                    ImageUrl = d.ImageUrl
                 }).ToList()
             };
         }

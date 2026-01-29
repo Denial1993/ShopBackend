@@ -7,6 +7,7 @@ import OrderListView from "../views/OrderListView.vue";
 import OrderDetailView from "../views/OrderDetailView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import ProductDetailView from "../views/ProductDetailView.vue";
+import ProfileView from "../views/ProfileView.vue"; // 👈 加入這一行
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,8 +16,9 @@ const router = createRouter({
     { path: "/login", name: "login", component: LoginView },
     { path: "/cart", name: "cart", component: CartView },
     { path: "/orders", name: "orders", component: OrderListView },
-    { path: "/orders/:id", name: "order-detail", component: OrderDetailView }, // :id 代表這是變數
+    { path: "/orders/:id", name: "order-detail", component: OrderDetailView },
     { path: "/register", name: "register", component: RegisterView },
+    { path: "/profile", name: "profile", component: ProfileView }, // 👈 加入這一行
     {
       path: "/product/:id",
       name: "product-detail",
@@ -26,6 +28,11 @@ const router = createRouter({
       path: "/admin/products",
       name: "admin-products",
       component: () => import("../views/AdminProductsView.vue"),
+    },
+    {
+      path: "/admin/orders",
+      name: "admin-orders",
+      component: () => import("../views/AdminOrdersView.vue"),
     },
   ],
 });

@@ -38,12 +38,18 @@ const handleLogout = () => {
 
           <template v-else>
             <li class="nav-item" v-if="authStore.userRole === 'Admin' || authStore.userRole === 'Staff'">
-              <router-link class="nav-link text-success fw-bold" to="/admin/products">後台管理</router-link>
+              <router-link class="nav-link text-success fw-bold" to="/admin/products">產品管理</router-link>
+            </li>
+            <li class="nav-item" v-if="authStore.userRole === 'Admin' || authStore.userRole === 'Staff'">
+              <router-link class="nav-link text-info fw-bold" to="/admin/orders">訂單管理</router-link>
             </li>
             <li class="nav-item">
               <span class="nav-link fw-bold text-primary">
-                Hi, {{ authStore.userEmail }} 您好!
+                Hi, {{ authStore.userFullName || authStore.userEmail }} 您好!
               </span>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/profile">個人帳號資訊</router-link>
             </li>
             <li class="nav-item">
               <a href="#" class="nav-link text-danger" @click.prevent="handleLogout">登出</a>

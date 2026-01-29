@@ -33,7 +33,8 @@ namespace ShopApi.Services
                     ProductId = i.ProductId,
                     ProductTitle = i.Product!.Title,
                     Price = i.Product.Price,
-                    Quantity = i.Quantity
+                    Quantity = i.Quantity,
+                    ImageUrl = i.Product.ImageUrl
                 }).ToList()
             };
             return dto;
@@ -85,7 +86,7 @@ namespace ShopApi.Services
             {
                 return false;
             }
-            
+
             _context.CartItems.Remove(cartItem);
             await _context.SaveChangesAsync();
 
