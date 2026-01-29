@@ -10,10 +10,11 @@ namespace ShopApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin,Staff")]
-    public class AdminProductController(ShopDbContext context, IWebHostEnvironment environment) : ControllerBase
+    public class AdminProductController(ShopDbContext context, Supabase.Client supabaseFunc) : ControllerBase
     {
         private readonly ShopDbContext _context = context;
-        private readonly IWebHostEnvironment _environment = environment;
+        // Rename to avoid conflicts if previously used _environment
+        private readonly Supabase.Client _supabase = supabaseFunc;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetProducts()
@@ -37,7 +38,8 @@ namespace ShopApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> CreateProduct([FromForm] ProductUploadDto dto)
         {
-            string imageUrl = "cable.jpg"; // Default
+            // Default image if none provided
+            string imageUrl = "https://placehold.co/600x400?text=No+Image";
 
             if (dto.Image != null)
             {
@@ -94,22 +96,26 @@ namespace ShopApi.Controllers
 
         private async Task<string> SaveImage(IFormFile image)
         {
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-            var filePath = Path.Combine(_environment.ContentRootPath, "..", "shop-frontend", "public", "images", fileName);
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
 
-            // Ensure directory exists
-            var directory = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory!);
-            }
+            using var memoryStream = new MemoryStream();
+            await image.CopyToAsync(memoryStream);
+            var fileBytes = memoryStream.ToArray();
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await image.CopyToAsync(stream);
-            }
+            // Bucket name from config or hardcoded default
+            var bucketName = "products";
 
-            return fileName;
+            // Upload to Supabase Storage
+            await _supabase.Storage
+                .From(bucketName)
+                .Upload(fileBytes, fileName, new Supabase.Storage.FileOptions { Upsert = false });
+
+            // Get Public URL
+            var publicUrl = _supabase.Storage
+                .From(bucketName)
+                .GetPublicUrl(fileName);
+
+            return publicUrl;
         }
     }
 }

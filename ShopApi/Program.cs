@@ -32,6 +32,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddEndpointsApiExplorer();
+// Supabase Configuration
+builder.Services.AddScoped<Supabase.Client>(_ =>
+    new Supabase.Client(
+        builder.Configuration["Supabase:Url"]!,
+        builder.Configuration["Supabase:Key"],
+        new Supabase.SupabaseOptions
+        {
+            AutoRefreshToken = true,
+            AutoConnectRealtime = true
+        }));
+
 builder.Services.AddSwaggerGen(options =>
 {
     // 1. 定義安全機制 (告訴 Swagger 我們要用 JWT Bearer)
