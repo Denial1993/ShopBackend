@@ -12,12 +12,6 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// // 1. 從設定檔 (包含 appsettings.json 和 User Secrets) 讀取連線字串
-// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// // 2. 註冊 DbContext，並告訴它用 SQL Server
-// builder.Services.AddDbContext<ShopDbContext>(options =>
-//     options.UseSqlServer(connectionString));
-
 // 找到原本的 UseSqlServer，改成 UseNpgsql
 builder.Services.AddDbContext<ShopDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -37,8 +31,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -93,12 +85,24 @@ builder.Services.AddControllers();
 // 開放 CORS (允許跨網域請求)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowVueApp", policy =>
+    options.AddPolicy("AllowShopFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // 👈 你的 Vue 網址
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        policy.WithOrigins(
+            "http://localhost:5173",                       // 1. 給你本機開發用 (Vue)
+            "https://shop-frontend-z8a0.onrender.com"      // 2. 給正式環境用 (Render)
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
+
+    options.AddPolicy("AllowRenderFrontend",
+        policy =>
+        {
+            // 👇 這是你截圖裡的前端網址 (注意：後面不要有斜線 /)
+            policy.WithOrigins("https://shop-frontend-z8a0.onrender.com")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
 });
 
 var app = builder.Build();
@@ -123,7 +127,7 @@ if (app.Environment.IsDevelopment())
 // app.UseHttpsRedirection(); //這行會幫我倒回去 https ，先註解掉
 
 
-app.UseCors("AllowVueApp"); // 👈 啟用剛剛設定的策略
+app.UseCors("AllowShopFrontend");
 
 // --- ⬇️ 新增這段 (開啟驗證與授權 Middleware) ⬇️ ---
 app.UseAuthentication(); // 先檢查你是誰 (查票)
