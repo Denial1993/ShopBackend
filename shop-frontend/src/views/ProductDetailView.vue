@@ -14,7 +14,7 @@ const isLoading = ref(true);
 const fetchProduct = async () => {
   try {
     const productId = route.params.id; // 從網址 /product/5 抓出 5
-    const response = await axios.get(`http://localhost:5000/api/Product/${productId}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/Product/${productId}`);
     product.value = response.data;
   } catch (error) {
     console.error(error);
@@ -35,7 +35,7 @@ const addToCart = async () => {
   }
 
   try {
-    await axios.post('http://localhost:5000/api/Cart', {
+    await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/Cart`, {
       productId: product.value.id,
       quantity: 1 // 這裡你可以之後擴充「數量選擇器」
     });

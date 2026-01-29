@@ -10,7 +10,7 @@ const selectedOrder = ref(null); // 用來存詳情
 // 抓取所有訂單
 const fetchAllOrders = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/AdminOrder');
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/AdminOrder`);
     orders.value = response.data;
   } catch (error) {
     console.error("無法取得訂單列表", error);
@@ -23,7 +23,7 @@ const fetchAllOrders = async () => {
 // 抓取單筆詳情
 const showDetail = async (orderId) => {
   try {
-    const response = await axios.get(`http://localhost:5000/api/AdminOrder/${orderId}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/AdminOrder/${orderId}`);
     selectedOrder.value = response.data;
     // 使用 Bootstrap Modal 的話可以這裡開，或者簡單用 v-if 顯示在下面
   } catch (error) {

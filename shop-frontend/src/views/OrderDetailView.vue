@@ -12,7 +12,7 @@ const fetchOrderDetail = async () => {
   try {
     // 從網址抓 id (例如 /orders/5 -> id 就是 5)
     const orderId = route.params.id;
-    const response = await axios.get(`http://localhost:5000/api/Order/${orderId}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/Order/${orderId}`);
     order.value = response.data;
   } catch (error) {
     console.error("找不到訂單", error);

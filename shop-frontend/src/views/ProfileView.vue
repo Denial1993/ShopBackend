@@ -76,7 +76,7 @@ const messageClass = ref('alert-success');
 
 const fetchProfile = async () => {
   try {
-    const res = await axios.get('http://localhost:5000/api/profile');
+    const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/profile`);
     profile.value = res.data;
   } catch (err) {
     console.error('取得資料失敗', err);
@@ -87,7 +87,7 @@ const updateProfile = async () => {
   loading.value = true;
   message.value = '';
   try {
-    await axios.put('http://localhost:5000/api/profile', profile.value);
+    await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, profile.value);
     
     message.value = '修改成功！您的姓名已更新，問候語將立即改變。';
     messageClass.value = 'alert-success text-success bg-success bg-opacity-10';

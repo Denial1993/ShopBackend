@@ -9,7 +9,7 @@ const router = useRouter();
 // 一進來就抓訂單歷史
 const fetchOrders = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/Order');
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/Order`);
     orders.value = response.data; // 根據你的截圖，這應該是一個陣列
   } catch (error) {
     console.error("無法取得訂單", error);
@@ -31,7 +31,7 @@ const handlePayment = async (orderId) => {
   try {
     // 1. 呼叫後端 API (傳送 OrderId)
     // 注意：後端會回傳一整段 HTML 字串
-    const response = await axios.post('http://localhost:5000/api/Payment/Checkout',
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/Payment/Checkout`,
       { OrderId: orderId }
     );
 

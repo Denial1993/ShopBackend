@@ -13,7 +13,7 @@ const isLoading = ref(true);
 
 const fetchProducts = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/Product');
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/Product`);
         products.value = response.data;
     } catch (error) {
         console.error(error);
@@ -24,7 +24,7 @@ const fetchProducts = async () => {
 
 const fetchCategories = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/Category');
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/Category`);
         categories.value = response.data;
     } catch (error) {
         console.error(error);
@@ -87,7 +87,7 @@ const addToCart = async (productId, event) => {
     }
 
     try {
-        await axios.post('http://localhost:5000/api/Cart', {
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/Cart`, {
             productId: productId,
             quantity: 1
         });

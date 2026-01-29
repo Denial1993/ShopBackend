@@ -99,7 +99,7 @@ import axios from 'axios';
 import { Modal } from 'bootstrap';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
   headers: {
     Authorization: `Bearer ${localStorage.getItem('shop_token')}`
   }
@@ -129,7 +129,7 @@ const fetchProducts = async () => {
 };
 
 const fetchCategories = async () => {
-  const res = await axios.get('http://localhost:5000/api/Category');
+  const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/Category`);
   categories.value = res.data;
 };
 

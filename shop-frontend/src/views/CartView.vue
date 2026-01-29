@@ -16,7 +16,7 @@ const checkout = async () => {
 
   try {
     // 呼叫你的結帳 API
-    await axios.post('http://localhost:5000/api/Order/checkout');
+    await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/Order/checkout`);
     
     alert("🎉 結帳成功！感謝您的購買！");
     
@@ -37,7 +37,7 @@ const totalPrice = computed(() => {
 // 抓取購物車資料
 const fetchCart = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/Cart');
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/Cart`);
     cartItems.value = response.data.items || [];
   } catch (error) {
     console.error("無法取得購物車", error);
@@ -53,7 +53,7 @@ const fetchCart = async () => {
 const removeItem = async (itemId) => {
   if(!confirm("確定要移除嗎？")) return;
   try {
-    await axios.delete(`http://localhost:5000/api/Cart/item/${itemId}`);
+    await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/Cart/item/${itemId}`);
     // 移除成功後，重新抓一次資料更新畫面
     fetchCart();
   } catch (error) {
