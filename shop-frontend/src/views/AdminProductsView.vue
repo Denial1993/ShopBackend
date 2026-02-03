@@ -101,7 +101,7 @@ import { Modal } from 'bootstrap';
 const apiClient = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
   headers: {
-    Authorization: `Bearer ${localStorage.getItem('shop_token')}`
+    Authorization: `Bearer ${sessionStorage.getItem('shop_token')}`
   }
 });
 

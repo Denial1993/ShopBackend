@@ -126,3 +126,127 @@ onMounted(() => {
 
   </div>
 </template>
+
+<style scoped>
+/* 🎮 購物車頁面 - 遊戲霓虹風格 */
+
+/* 主標題 */
+h2 {
+  font-family: 'Press Start 2P', cursive !important;
+  color: var(--neon-purple) !important;
+  text-shadow: var(--glow-purple);
+  font-size: 2rem !important;
+}
+
+/* 空購物車卡片 */
+.bg-light {
+  background: var(--bg-dark-card) !important;
+  border: 2px solid var(--neon-purple);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+}
+
+.bg-light h4 {
+  font-family: 'VT323', monospace;
+  color: var(--text-secondary) !important;
+}
+
+/* 表格樣式已在全域 CSS 定義，這裡添加特定調整 */
+.table {
+  border: 2px solid var(--neon-purple);
+}
+
+.table thead th {
+  font-size: 1rem !important;
+}
+
+/* 商品圖片 - 霓虹邊框 */
+.rounded-3.shadow-sm {
+  border: 2px solid var(--neon-purple-light) !important;
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.3) !important;
+}
+
+/* 商品名稱 */
+.fw-bold.fs-5 {
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 1.1rem !important;
+  color: var(--neon-purple-light) !important;
+  text-shadow: 0 0 5px var(--neon-purple-light);
+}
+
+/* 價格文字 */
+td {
+  font-family: 'VT323', monospace;
+  font-size: 1.4rem;
+}
+
+/* 小計價格 */
+.fw-bold.text-danger {
+  color: var(--neon-pink) !important;
+  text-shadow: 0 0 10px var(--neon-pink);
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 1.2rem !important;
+}
+
+/* 移除按鈕 */
+.btn-outline-danger {
+  background: transparent !important;
+  border: 2px solid var(--neon-pink) !important;
+  color: var(--neon-pink) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background: var(--neon-pink) !important;
+  color: var(--bg-dark) !important;
+  box-shadow: 0 0 15px var(--neon-pink);
+  transform: scale(1.1);
+}
+
+/* 總金額卡片 */
+.card.border-0.bg-light {
+  background: var(--bg-dark-card) !important;
+  border: 3px solid var(--neon-pink) !important;
+  box-shadow: 0 0 25px rgba(244, 63, 94, 0.6);
+}
+
+.card-body h4 {
+  font-family: 'Press Start 2P', cursive !important;
+  color: var(--neon-purple-light) !important;
+  text-shadow: 0 0 10px var(--neon-purple-light);
+  font-size: 1.6rem !important;
+}
+
+.card-body h4 .text-danger {
+  color: var(--neon-pink) !important;
+  text-shadow: 0 0 10px var(--neon-pink),
+               0 0 20px var(--neon-pink);
+}
+
+/* 結帳按鈕 - 大型霓虹 CTA */
+.btn-dark.btn-lg {
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 1.2rem !important;
+  background: transparent !important;
+  border: 3px solid var(--neon-pink) !important;
+  color: var(--neon-pink) !important;
+  text-shadow: 0 0 10px var(--neon-pink);
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
+  padding: 15px 40px !important;
+  transition: all 0.3s ease;
+}
+
+.btn-dark.btn-lg:hover {
+  background: var(--neon-pink) !important;
+  color: var(--bg-dark) !important;
+  text-shadow: none;
+  box-shadow: 0 0 40px var(--neon-pink),
+              0 0 80px var(--neon-pink);
+  transform: scale(1.1);
+}
+
+/* 去逛逛按鈕 */
+.btn-primary.mt-3 {
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 0.8rem !important;
+}
+</style>

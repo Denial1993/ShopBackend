@@ -9,7 +9,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import axios from 'axios'
 // 👇 2. 設定全域攔截器 (這段最重要！)
 axios.interceptors.request.use(config => {
-  const token = localStorage.getItem('shop_token');
+  const token = sessionStorage.getItem('shop_token');
   if (token) {
     // 如果有 Token，就加在 Header 裡：Authorization: Bearer xxxxx
     config.headers.Authorization = `Bearer ${token}`;

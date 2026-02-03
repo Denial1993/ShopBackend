@@ -4,17 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using ShopApi.Data;
 using ShopApi.Models;
 using ShopApi.Dtos;
+using Microsoft.Extensions.Configuration;
 
 namespace ShopApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin,Staff")]
-    public class AdminProductController(ShopDbContext context, Supabase.Client supabaseFunc) : ControllerBase
+    public class AdminProductController(ShopDbContext context, Supabase.Client supabaseFunc, IConfiguration configuration) : ControllerBase
     {
         private readonly ShopDbContext _context = context;
         // Rename to avoid conflicts if previously used _environment
         private readonly Supabase.Client _supabase = supabaseFunc;
+        private readonly IConfiguration _configuration = configuration;
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<object>>> GetProducts()
@@ -110,10 +112,19 @@ namespace ShopApi.Controllers
                 .From(bucketName)
                 .Upload(fileBytes, fileName, new Supabase.Storage.FileOptions { Upsert = false });
 
-            // Get Public URL
-            var publicUrl = _supabase.Storage
-                .From(bucketName)
-                .GetPublicUrl(fileName);
+            // Ensure we return the full URL
+            var supabaseUrl = _configuration["Supabase:Url"];
+
+            // DEBUG LOGGING
+            Console.WriteLine($"[DEBUG] Supabase:Url from config: '{supabaseUrl}'");
+
+            // Remove trailing slash if present
+            if (supabaseUrl != null && supabaseUrl.EndsWith("/"))
+            {
+                supabaseUrl = supabaseUrl[..^1];
+            }
+
+            var publicUrl = $"{supabaseUrl}/storage/v1/object/public/{bucketName}/{fileName}";
 
             return publicUrl;
         }

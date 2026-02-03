@@ -9,7 +9,7 @@ export const authStore = reactive({
 
   // 初始化：一開網頁就檢查有沒有 Token
   checkLogin() {
-    const token = localStorage.getItem('shop_token');
+    const token = sessionStorage.getItem('shop_token');
     if (token) {
       this.isLoggedIn = true;
 
@@ -40,13 +40,13 @@ export const authStore = reactive({
 
   // 登入動作：存 Token 並更新狀態
   login(token) {
-    localStorage.setItem('shop_token', token);
+    sessionStorage.setItem('shop_token', token);
     this.checkLogin(); // 更新狀態
   },
 
   // 登出動作：清空 Token 並更新狀態
   logout() {
-    localStorage.removeItem('shop_token');
+    sessionStorage.removeItem('shop_token');
     this.checkLogin(); // 更新狀態
   }
 });

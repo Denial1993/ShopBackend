@@ -94,3 +94,121 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* 🎮 商品詳情頁 - 遊戲霓虹風格 */
+
+/* 商品圖片卡片 - 霓虹邊框 */
+.card.border-0.shadow-sm {
+  background: var(--bg-dark-card) !important;
+  border: 3px solid var(--neon-purple) !important;
+  box-shadow: 0 0 25px rgba(124, 58, 237, 0.6),
+              0 10px 40px rgba(0, 0, 0, 0.5) !important;
+  transition: all 0.3s ease;
+}
+
+.card.border-0.shadow-sm:hover {
+  border-color: var(--neon-pink) !important;
+  box-shadow: 0 0 40px rgba(244, 63, 94, 0.8),
+              0 15px 50px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* 分類標籤 */
+.badge.bg-secondary {
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 0.6rem !important;
+  background: var(--neon-purple) !important;
+  color: var(--bg-dark);
+  border: 1px solid var(--neon-purple);
+  box-shadow: 0 0 10px var(--neon-purple);
+  padding: 6px 12px;
+}
+
+/* 商品標題 */
+h1.fw-bold {
+  font-family: 'Press Start 2P', cursive !important;
+  color: var(--neon-purple) !important;
+  text-shadow: 0 0 10px var(--neon-purple),
+               0 0 20px var(--neon-purple),
+               0 0 40px var(--neon-purple);
+  font-size: 1.8rem !important;
+  line-height: 1.6;
+}
+
+/* 價格 */
+h2.text-danger {
+  color: var(--neon-pink) !important;
+  text-shadow: 0 0 15px var(--neon-pink),
+               0 0 30px var(--neon-pink);
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 1.5rem !important;
+}
+
+/* 商品描述 */
+.text-muted {
+  font-family: 'VT323', monospace !important;
+  color: var(--text-secondary) !important;
+  font-size: 1.2rem !important;
+  line-height: 1.8;
+}
+
+/* 分隔線 */
+hr {
+  border-color: var(--neon-purple) !important;
+  opacity: 0.5;
+}
+
+/* 加入購物車按鈕 */
+.btn-dark.btn-lg {
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 0.8rem !important;
+  background: transparent !important;
+  border: 3px solid var(--neon-pink) !important;
+  color: var(--neon-pink) !important;
+  text-shadow: 0 0 10px var(--neon-pink);
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
+  transition: all 0.3s ease;
+  padding: 15px 40px !important;
+}
+
+.btn-dark.btn-lg:hover {
+  background: var(--neon-pink) !important;
+  color: var(--bg-dark) !important;
+  text-shadow: none;
+  box-shadow: 0 0 40px var(--neon-pink),
+              0 0 80px var(--neon-pink);
+  transform: scale(1.05);
+}
+
+/* 回首頁按鈕 */
+.btn-outline-secondary.btn-lg {
+  font-family: 'VT323', monospace !important;
+  font-size: 1rem !important;
+  background: transparent !important;
+  border: 2px solid var(--neon-purple-light) !important;
+  color: var(--neon-purple-light) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary.btn-lg:hover {
+  background: var(--neon-purple-light) !important;
+  color: var(--bg-dark) !important;
+  box-shadow: 0 0 15px var(--neon-purple-light);
+}
+
+/* 載入中 */
+.spinner-border {
+  box-shadow: 0 0 15px var(--neon-purple);
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  h1.fw-bold {
+    font-size: 1.2rem !important;
+  }
+  
+  h2.text-danger {
+    font-size: 1.2rem !important;
+  }
+}
+</style>

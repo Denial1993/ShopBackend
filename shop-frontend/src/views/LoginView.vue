@@ -69,9 +69,86 @@ const handleLogin = async () => {
 </template>
 
 <style scoped>
-/* 讓輸入框被點選時，外框比較好看 */
+/* 🎮 登入頁面 - 遊戲霓虹風格 */
+
+/* 登入卡片 - 霓虹邊框 */
+.card.shadow-lg {
+  background: var(--bg-dark-card) !important;
+  border: 3px solid var(--neon-purple) !important;
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.6),
+              0 15px 50px rgba(0, 0, 0, 0.6) !important;
+  border-radius: 15px !important;
+}
+
+/* 品牌標題 */
+h2.text-center {
+  font-family: 'Press Start 2P', cursive !important;
+  color: var(--neon-pink) !important;
+  text-shadow: 0 0 15px var(--neon-pink),
+               0 0 30px var(--neon-pink),
+               0 0 60px var(--neon-pink);
+  font-size: 1.8rem !important;
+  letter-spacing: 4px;
+}
+
+/* 歡迎文字 */
+.text-muted {
+  font-family: 'VT323', monospace !important;
+  color: var(--text-secondary) !important;
+  font-size: 1.1rem !important;
+}
+
+/* 表單輸入框樣式已在全域 CSS 定義 */
 .form-control:focus {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
-  border-color: #0d6efd;
+  box-shadow: 0 0 15px var(--neon-pink) !important;
+  border-color: var(--neon-pink) !important;
+}
+
+/* 浮動標籤 */
+.form-floating label {
+  font-family: 'VT323', monospace !important;
+  color: var(--neon-purple-light) !important;
+  font-size: 1rem;
+}
+
+/* 登入按鈕 */
+.btn-primary.w-100 {
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 0.8rem !important;
+  background: transparent !important;
+  border: 3px solid var(--neon-pink) !important;
+  color: var(--neon-pink) !important;
+  text-shadow: 0 0 10px var(--neon-pink);
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
+  border-radius: 25px !important;
+  transition: all 0.3s ease;
+}
+
+.btn-primary.w-100:hover {
+  background: var(--neon-pink) !important;
+  color: var(--bg-dark) !important;
+  text-shadow: none;
+  box-shadow: 0 0 40px var(--neon-pink),
+              0 0 80px var(--neon-pink);
+  transform: scale(1.05);
+}
+
+/* 註冊連結 */
+.text-primary.small {
+  color: var(--neon-cyan) !important;
+  font-family: 'VT323', monospace !important;
+  font-size: 1rem !important;
+  text-shadow: 0 0 5px var(--neon-cyan);
+  transition: all 0.2s ease;
+}
+
+.text-primary.small:hover {
+  color: var(--neon-purple) !important;
+  text-shadow: 0 0 10px var(--neon-purple);
+}
+
+.small.text-muted {
+  font-family: 'VT323', monospace;
+  font-size: 0.95rem !important;
 }
 </style>
