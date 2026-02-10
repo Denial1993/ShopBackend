@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Website Status
-        run: curl -I https://shop-frontend-z8a0.onrender.com
+        run: curl -I https://shopbackend-58gp.onrender.com/api/Product
