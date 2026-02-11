@@ -49,6 +49,12 @@ const addToCart = async () => {
 onMounted(() => {
   fetchProduct();
 });
+
+const getImageUrl = (url) => {
+    if (!url) return 'https://placehold.co/600x600?text=No+Image';
+    if (url.startsWith('http') || url.startsWith('data:')) return url;
+    return `/images/${url}`;
+};
 </script>
 
 <template>
@@ -61,8 +67,8 @@ onMounted(() => {
     <div v-else-if="product" class="row">
       <div class="col-md-6 mb-4">
         <div class="card border-0 shadow-sm p-3 clay-card">
-            <img :src="product.imageUrl ? `/images/${product.imageUrl}` : 'https://placehold.co/600x600?text=No+Image'" 
-                 class="img-fluid rounded" 
+            <img :src="getImageUrl(product.imageUrl)" 
+                 class="card-img-top w-100" 
                  style="object-fit: contain; max-height: 500px; border-radius: 20px;">
         </div>
       </div>

@@ -102,6 +102,12 @@ onMounted(() => {
     fetchProducts();
     fetchCategories();
 });
+
+const getImageUrl = (url) => {
+    if (!url) return 'https://placehold.co/600x400?text=No+Image';
+    if (url.startsWith('http') || url.startsWith('data:')) return url;
+    return `/images/${url}`;
+};
 </script>
 
 <template>
@@ -151,7 +157,7 @@ onMounted(() => {
                              @click="goToProduct(item.id)"
                              style="cursor: pointer;">
                             <div class="position-relative overflow-hidden" style="height: 200px;">
-                                <img :src="item.imageUrl ? `/images/${item.imageUrl}` : 'https://placehold.co/600x400?text=No+Image'"
+                                <img :src="getImageUrl(item.imageUrl)"
                                     class="card-img-top w-100 h-100" style="object-fit: contain; padding: 10px;"
                                     alt="Product Image">
                             </div>
