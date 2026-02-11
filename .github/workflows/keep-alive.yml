@@ -7,7 +7,7 @@ on:
 
 jobs:
   ping:
-    runs-on: Wake up Backend
+    runs-on: ubuntu-latest
     steps:
       - name: Check Website Status
         run: curl -I https://shopbackend-58gp.onrender.com/api/Product
