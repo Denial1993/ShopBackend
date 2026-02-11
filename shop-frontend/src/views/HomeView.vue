@@ -110,7 +110,7 @@ onMounted(() => {
             <!-- 左側分類選單 -->
             <div class="col-md-3 col-lg-2">
                 <div class="category-sidebar">
-                    <h4 class="mb-3 fw-bold">商品分類</h4>
+                    <h4 class="mb-3 fw-bold">🐾 服務分類</h4>
                     
                     <!-- 全部商品 -->
                     <button 
@@ -137,7 +137,7 @@ onMounted(() => {
             <!-- 右側商品區域 -->
             <div class="col-md-9 col-lg-10">
                 <h2 class="text-center my-4">
-                    {{ selectedCategory || '熱銷商品' }}
+                    {{ selectedCategory || '🐶 熱銷商品' }}
                 </h2>
 
                 <div v-if="isLoading" class="text-center mt-5">
@@ -162,7 +162,7 @@ onMounted(() => {
                                 <h5 class="fw-bold text-danger mt-auto">NT$ {{ formatPrice(item.price) }}</h5>
 
                                 <button @click="addToCart(item.id, $event)" class="btn btn-outline-dark w-100 mt-2 rounded-0">
-                                    加入購物車
+                                    🛒 加入購物車
                                 </button>
                             </div>
                         </div>
@@ -206,198 +206,166 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* 🎮 遊戲平台首頁 - 霓虹風格 */
+/* 🐾 寵物美容首頁 - Claymorphism 風格 */
 
-/* 商品卡片 - 3D 霓虹邊框 */
+/* 商品卡片 - Claymorphism 3D 黏土效果 */
 .product-card {
-  background: var(--bg-dark-card) !important;
-  border: 2px solid var(--neon-purple) !important;
-  box-shadow: 0 0 15px rgba(124, 58, 237, 0.4),
-              0 4px 10px rgba(0, 0, 0, 0.5) !important;
-  transition: all 0.3s ease;
+  background: var(--bg-card) !important;
+  border: none !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--clay-shadow) !important;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
-  overflow: visible !important;
-}
-
-.product-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px solid var(--neon-pink);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+  overflow: hidden !important;
 }
 
 .product-card:hover {
-  border-color: var(--neon-pink) !important;
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 0 30px rgba(244, 63, 94, 0.8),
-              0 0 60px rgba(124, 58, 237, 0.4),
-              0 15px 40px rgba(0, 0, 0, 0.6) !important;
-}
-
-.product-card:hover::before {
-  opacity: 1;
-  animation: neon-pulse 1.5s ease-in-out infinite;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--clay-shadow-hover) !important;
 }
 
 /* 商品圖片容器 */
 .product-card .position-relative {
-  background: var(--bg-dark-lighter);
-  border-bottom: 2px solid var(--neon-purple);
+  background: var(--bg-cream);
+  border-bottom: 2px solid var(--bg-soft-pink);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 /* 商品卡片內容 */
 .card-body {
   background: transparent;
-  color: var(--text-primary) !important;
+  color: var(--text-body) !important;
+  padding: 16px !important;
 }
 
 /* 商品標題 */
 .card-title {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 0.75rem !important;
-  color: var(--neon-purple-light) !important;
-  text-shadow: 0 0 5px var(--neon-purple-light);
-  line-height: 1.6 !important;
-  min-height: 48px;
+  font-family: 'Fredoka One', cursive !important;
+  font-size: 0.95rem !important;
+  color: var(--text-dark) !important;
+  line-height: 1.4 !important;
+  min-height: 42px;
 }
 
 /* 分類標籤 */
 .text-muted {
-  font-family: 'VT323', monospace !important;
-  color: var(--text-secondary) !important;
-  font-size: 1rem !important;
+  font-family: 'Nunito', sans-serif !important;
+  color: var(--text-muted) !important;
+  font-size: 0.85rem !important;
 }
 
 /* 價格 */
 .text-danger {
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 10px var(--neon-pink),
-               0 0 20px var(--neon-pink);
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 1rem !important;
+  color: var(--coral) !important;
+  font-family: 'Fredoka One', cursive !important;
+  font-size: 1.1rem !important;
 }
 
 /* 加入購物車按鈕 */
 .card-body .btn-outline-dark {
-  font-family: 'VT323', monospace !important;
-  font-size: 1.1rem !important;
-  background: transparent !important;
-  border: 2px solid var(--neon-purple-light) !important;
-  color: var(--neon-purple-light) !important;
-  border-radius: 0 !important;
-  transition: all 0.3s ease;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  background: var(--bg-card) !important;
+  border: 2px solid var(--coral) !important;
+  color: var(--coral) !important;
+  border-radius: var(--border-radius-pill) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   padding: 8px 16px !important;
 }
 
 .card-body .btn-outline-dark:hover {
-  background: var(--neon-purple-light) !important;
-  color: var(--bg-dark) !important;
-  box-shadow: 0 0 15px var(--neon-purple-light);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%) !important;
+  color: #FFFFFF !important;
+  border-color: var(--coral) !important;
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.35);
 }
 
-/* 分類側邊欄 - 霓虹邊框 */
+/* 分類側邊欄 - Claymorphism */
 .category-sidebar {
   position: sticky;
   top: 100px;
-  padding: 20px;
-  background: var(--bg-dark-card) !important;
-  border: 2px solid var(--neon-purple);
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4),
-              0 4px 10px rgba(0, 0, 0, 0.5);
+  padding: 24px;
+  background: var(--bg-card) !important;
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--clay-shadow);
 }
 
 .category-sidebar h4 {
-  font-family: 'Press Start 2P', cursive !important;
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 10px var(--neon-pink);
-  font-size: 0.9rem !important;
-  border-bottom: 2px solid var(--neon-pink) !important;
+  font-family: 'Fredoka One', cursive !important;
+  color: var(--coral) !important;
+  font-size: 1.1rem !important;
+  border-bottom: 3px solid var(--bg-soft-pink) !important;
   padding-bottom: 15px;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
-/* 分類按鈕 - 霓虹效果 */
+/* 分類按鈕 - 圓潤可愛 */
 .category-btn {
   display: block;
   width: 100%;
   text-align: left;
   padding: 12px 16px;
-  margin-bottom: 10px;
-  border: 2px solid var(--neon-purple-light);
-  background: transparent !important;
-  color: var(--neon-purple-light) !important;
-  border-radius: 6px;
+  margin-bottom: 8px;
+  border: 2px solid transparent;
+  background: var(--bg-cream) !important;
+  color: var(--text-body) !important;
+  border-radius: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: 'VT323', monospace;
-  font-size: 1.1rem;
-  box-shadow: 0 0 5px rgba(167, 139, 250, 0.2);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: var(--clay-shadow-sm);
 }
 
 .category-btn:hover {
-  background: var(--bg-dark-lighter) !important;
-  color: var(--neon-cyan) !important;
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
-  transform: translateX(8px) scale(1.02);
+  background: var(--bg-soft-pink) !important;
+  color: var(--coral) !important;
+  border-color: var(--coral-light);
+  transform: translateX(4px);
 }
 
 .category-btn.active {
-  background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-pink) 100%) !important;
-  color: var(--bg-dark) !important;
-  font-weight: 700;
-  border-color: var(--neon-pink);
-  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6),
-              0 4px 15px rgba(124, 58, 237, 0.4);
-  text-shadow: none;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 800;
+  border-color: transparent;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.35);
 }
 
 .category-btn i {
-  font-size: 1.2rem;
-  margin-right: 8px;
-  filter: drop-shadow(0 0 3px currentColor);
+  font-size: 1rem;
+  margin-right: 6px;
 }
 
 /* 頁面標題 */
 h2.text-center {
-  font-family: 'Press Start 2P', cursive !important;
-  color: var(--neon-purple) !important;
-  text-shadow: 0 0 10px var(--neon-purple),
-               0 0 20px var(--neon-purple),
-               0 0 40px var(--neon-purple);
-  font-size: 1.5rem !important;
-  letter-spacing: 3px;
+  font-family: 'Fredoka One', cursive !important;
+  color: var(--text-dark) !important;
+  font-size: 1.8rem !important;
+  letter-spacing: 1px;
   margin: 2rem 0 !important;
 }
 
 /* 載入中提示 */
 .spinner-border {
-  border-color: var(--neon-purple) !important;
+  border-color: var(--coral) !important;
   border-right-color: transparent !important;
-  box-shadow: 0 0 10px var(--neon-purple);
 }
 
 .text-muted.mt-2 {
-  color: var(--text-secondary) !important;
-  font-family: 'VT323', monospace;
-  font-size: 1.2rem;
+  color: var(--text-muted) !important;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
 }
 
 /* 空狀態圖示 */
 .bi-inbox {
-  filter: drop-shadow(0 0 10px var(--neon-purple));
-  color: var(--neon-purple) !important;
+  color: var(--text-light) !important;
 }
-
-/* 分頁按鈕已經在全域 CSS 中定義，這裡不需要額外樣式 */
 
 /* 響應式調整 */
 @media (max-width: 768px) {
@@ -408,11 +376,11 @@ h2.text-center {
   }
   
   h2.text-center {
-    font-size: 1.2rem !important;
+    font-size: 1.4rem !important;
   }
   
   .card-title {
-    font-size: 0.65rem !important;
+    font-size: 0.85rem !important;
     min-height: auto;
   }
 }

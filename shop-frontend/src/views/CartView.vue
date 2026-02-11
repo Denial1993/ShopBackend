@@ -68,44 +68,45 @@ onMounted(() => {
 
 <template>
   <div class="container" style="margin-top: 100px;">
-    <h2 class="mb-4 fw-bold">我的購物車</h2>
+    <h2 class="mb-4 fw-bold">🛒 我的購物車</h2>
 
-    <div v-if="cartItems.length === 0" class="text-center py-5 bg-light rounded-3">
+    <div v-if="cartItems.length === 0" class="text-center py-5 empty-cart-box">
       <h4 class="text-muted">購物車還是空的喔！</h4>
-      <router-link to="/" class="btn btn-primary mt-3">去逛逛</router-link>
+      <p class="text-muted small">快去挑選喜歡的美容服務或商品吧～</p>
+      <router-link to="/" class="btn btn-primary mt-3 rounded-pill px-4">前往逛逛</router-link>
     </div>
 
     <div v-else>
-      <div class="table-responsive">
-        <table class="table align-middle">
-          <thead class="table-light">
+      <div class="table-responsive clay-table-container p-4 mb-4">
+        <table class="table align-middle border-0 mb-0">
+          <thead>
             <tr>
-              <th>商品資訊</th>
-              <th>單價</th>
-              <th>數量</th>
-              <th>小計</th>
-              <th>操作</th>
+              <th scope="col" class="border-0 text-muted">商品資訊</th>
+              <th scope="col" class="border-0 text-muted">單價</th>
+              <th scope="col" class="border-0 text-muted">數量</th>
+              <th scope="col" class="border-0 text-muted">小計</th>
+              <th scope="col" class="border-0 text-muted">操作</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in cartItems" :key="item.id">
-              <td>
+              <td class="border-bottom-0 py-3">
                 <div class="d-flex align-items-center">
                     <img :src="item.imageUrl ? `/images/${item.imageUrl}` : 'https://placehold.co/100'" 
-                         class="rounded-3 shadow-sm me-3"
+                         class="rounded-4 shadow-sm me-3 clay-img"
                          style="width: 80px; height: 80px; object-fit: cover;">
                     <div class="d-flex flex-column">
-                        <span class="fw-bold fs-5">{{ item.productTitle }}</span>
+                        <span class="fw-bold fs-5 text-dark">{{ item.productTitle }}</span>
                     </div>
                 </div>
               </td>
-              <td>NT$ {{ formatPrice(item.price) }}</td>
-              <td>
-                x {{ item.quantity }}
+              <td class="border-bottom-0 text-secondary fw-bold">NT$ {{ formatPrice(item.price) }}</td>
+              <td class="border-bottom-0">
+                <span class="badge bg-light text-dark fs-6 px-3 py-2 rounded-pill shadow-sm">x {{ item.quantity }}</span>
               </td>
-              <td class="fw-bold text-danger">NT$ {{ formatPrice(item.price * item.quantity) }}</td>
-              <td>
-                <button @click="removeItem(item.id)" class="btn btn-sm btn-outline-danger">
+              <td class="border-bottom-0 fw-bold text-danger fs-5">NT$ {{ formatPrice(item.price * item.quantity) }}</td>
+              <td class="border-bottom-0">
+                <button @click="removeItem(item.id)" class="btn btn-sm btn-outline-danger btn-remove rounded-circle shadow-sm">
                   <span class="fs-6">×</span>
                 </button>
               </td>
@@ -114,12 +115,13 @@ onMounted(() => {
         </table>
       </div>
 
-      <div class="card border-0 bg-light mt-4">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <h4 class="fw-bold mb-0">總金額： <span class="text-danger">NT$ {{ formatPrice(totalPrice) }}</span></h4>
-
+      <div class="card border-0 mt-4 clay-card">
+        <div class="card-body d-flex justify-content-between align-items-center p-4">
+          <h4 class="fw-bold mb-0 text-dark">總金額： <span class="text-danger ms-2">NT$ {{ formatPrice(totalPrice) }}</span></h4>
           
-          <button @click="checkout" class="btn btn-dark btn-lg px-5">前往結帳</button>
+          <button @click="checkout" class="btn btn-primary btn-lg px-5 rounded-pill shadow-lg hover-bounce">
+            前往結帳 💳
+          </button>
         </div>
       </div>
     </div>
@@ -128,125 +130,156 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* 🎮 購物車頁面 - 遊戲霓虹風格 */
+/* 🐾 購物車頁面 - 寵物 Claymorphism 風格 */
 
-/* 主標題 */
-h2 {
-  font-family: 'Press Start 2P', cursive !important;
-  color: var(--neon-purple) !important;
-  text-shadow: var(--glow-purple);
+/* 標題 */
+h2.fw-bold {
+  font-family: 'Fredoka One', cursive !important;
+  color: var(--text-dark) !important;
   font-size: 2rem !important;
+  letter-spacing: 1px;
 }
 
-/* 空購物車卡片 */
-.bg-light {
-  background: var(--bg-dark-card) !important;
-  border: 2px solid var(--neon-purple);
-  box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+/* 空購物車區塊 */
+.empty-cart-box {
+  background: var(--bg-card);
+  border-radius: 28px;
+  box-shadow: inset 4px 4px 10px rgba(174, 160, 140, 0.15),
+              inset -4px -4px 10px rgba(255, 255, 255, 0.8); /* 內凹效果 */
+  padding: 60px !important;
 }
 
-.bg-light h4 {
-  font-family: 'VT323', monospace;
-  color: var(--text-secondary) !important;
+.text-muted {
+  font-family: 'Nunito', sans-serif !important;
+  color: var(--text-muted) !important;
 }
 
-/* 表格樣式已在全域 CSS 定義，這裡添加特定調整 */
-.table {
-  border: 2px solid var(--neon-purple);
+/* 購物車表格容器 - Clay 卡片 */
+.clay-table-container {
+  background: var(--bg-card);
+  border-radius: 28px;
+  box-shadow: 12px 12px 24px rgba(174, 160, 140, 0.2),
+              -8px -8px 20px rgba(255, 255, 255, 0.8);
 }
 
+/* 表格樣式調整 */
 .table thead th {
-  font-size: 1rem !important;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background-color: transparent !important;
 }
 
-/* 商品圖片 - 霓虹邊框 */
-.rounded-3.shadow-sm {
-  border: 2px solid var(--neon-purple-light) !important;
-  box-shadow: 0 0 10px rgba(167, 139, 250, 0.3) !important;
+.table tbody tr {
+  background-color: transparent !important;
+  box-shadow: none !important; /* 移除全域表格的 hover 效果 */
+  border-bottom: 2px solid var(--bg-soft-pink) !important;
+}
+
+.table tbody tr:last-child {
+  border-bottom: none !important;
+}
+
+.table tbody tr:hover {
+  background-color: var(--bg-soft-mint) !important; /* 不一樣的 hover 色 */
+  transform: none !important;
+}
+
+/* 商品圖片 - 圓潤陰影 */
+.clay-img {
+  border-radius: 16px !important;
+  box-shadow: 4px 4px 10px rgba(174, 160, 140, 0.2) !important;
 }
 
 /* 商品名稱 */
-.fw-bold.fs-5 {
-  font-family: 'Press Start 2P', cursive !important;
+.fs-5.text-dark {
+  font-family: 'Fredoka One', cursive !important;
+  color: var(--text-dark) !important;
   font-size: 1.1rem !important;
-  color: var(--neon-purple-light) !important;
-  text-shadow: 0 0 5px var(--neon-purple-light);
 }
 
-/* 價格文字 */
-td {
-  font-family: 'VT323', monospace;
-  font-size: 1.4rem;
+/* 單價 */
+.text-secondary {
+  color: var(--text-body) !important;
+  font-family: 'Nunito', sans-serif !important;
+}
+
+/* 數量 Badge */
+.badge.bg-light {
+  background-color: var(--bg-cream) !important;
+  color: var(--text-dark) !important;
+  font-family: 'Nunito', sans-serif;
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 /* 小計價格 */
-.fw-bold.text-danger {
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 10px var(--neon-pink);
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 1.2rem !important;
+.text-danger.fs-5 {
+  color: var(--coral) !important;
+  font-family: 'Fredoka One', cursive !important;
 }
 
 /* 移除按鈕 */
-.btn-outline-danger {
+.btn-remove {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-soft-pink) !important;
+  color: var(--coral-light) !important;
   background: transparent !important;
-  border: 2px solid var(--neon-pink) !important;
-  color: var(--neon-pink) !important;
   transition: all 0.3s ease;
 }
 
-.btn-outline-danger:hover {
-  background: var(--neon-pink) !important;
-  color: var(--bg-dark) !important;
-  box-shadow: 0 0 15px var(--neon-pink);
-  transform: scale(1.1);
+.btn-remove:hover {
+  background: var(--coral) !important;
+  color: #fff !important;
+  border-color: var(--coral) !important;
+  transform: rotate(90deg);
 }
 
-/* 總金額卡片 */
-.card.border-0.bg-light {
-  background: var(--bg-dark-card) !important;
-  border: 3px solid var(--neon-pink) !important;
-  box-shadow: 0 0 25px rgba(244, 63, 94, 0.6);
+/* 總金額卡片 - Clay 卡片 */
+.clay-card {
+  background: var(--bg-card) !important;
+  border-radius: 28px !important;
+  box-shadow: 12px 12px 24px rgba(174, 160, 140, 0.2),
+              -8px -8px 20px rgba(255, 255, 255, 0.8) !important;
 }
 
 .card-body h4 {
-  font-family: 'Press Start 2P', cursive !important;
-  color: var(--neon-purple-light) !important;
-  text-shadow: 0 0 10px var(--neon-purple-light);
-  font-size: 1.6rem !important;
+  font-family: 'Fredoka One', cursive !important;
+  font-size: 1.4rem !important;
 }
 
-.card-body h4 .text-danger {
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 10px var(--neon-pink),
-               0 0 20px var(--neon-pink);
+/* 結帳按鈕 */
+.btn-primary.btn-lg {
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 1.1rem !important;
+  background: linear-gradient(135deg, var(--mint-dark) 0%, var(--mint) 100%) !important; /* 使用薄荷綠 */
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* 結帳按鈕 - 大型霓虹 CTA */
-.btn-dark.btn-lg {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 1.2rem !important;
-  background: transparent !important;
-  border: 3px solid var(--neon-pink) !important;
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 10px var(--neon-pink);
-  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
-  padding: 15px 40px !important;
-  transition: all 0.3s ease;
+.btn-primary.btn-lg:hover {
+  background: linear-gradient(135deg, var(--mint) 0%, var(--mint-light) 100%) !important;
+  box-shadow: 0 10px 30px rgba(78, 205, 196, 0.5);
+  transform: translateY(-3px) scale(1.02);
 }
 
-.btn-dark.btn-lg:hover {
-  background: var(--neon-pink) !important;
-  color: var(--bg-dark) !important;
-  text-shadow: none;
-  box-shadow: 0 0 40px var(--neon-pink),
-              0 0 80px var(--neon-pink);
-  transform: scale(1.1);
-}
-
-/* 去逛逛按鈕 */
-.btn-primary.mt-3 {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 0.8rem !important;
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .card-body.d-flex {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .btn-primary.btn-lg {
+    width: 100%;
+  }
 }
 </style>

@@ -21,7 +21,7 @@ const handleLogout = () => {
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm fixed-top">
     <div class="container">
-      <router-link class="navbar-brand fw-bold fs-3" to="/">Ubtiv</router-link>
+      <router-link class="navbar-brand fw-bold fs-3" to="/">🐾 PawPals</router-link>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -62,7 +62,7 @@ const handleLogout = () => {
 
           <li class="nav-item">
             <router-link to="/cart" class="nav-link btn btn-primary text-white ms-3 rounded-pill px-4">
-              購物車
+              🛒 購物車
             </router-link>
           </li>
         </ul>
@@ -77,144 +77,129 @@ const handleLogout = () => {
 </template>
 
 <style>
-/* 🎮 遊戲平台導航列 - 霓虹風格 */
+/* 🐾 PawPals 導航列 - 溫暖寵物風格 */
 
-/* 導航列深色主題 + 霓虹邊框 */
+/* 導航列 - 溫暖白色背景 + 柔和陰影 */
 .navbar {
-  background: var(--bg-dark-card) !important;
-  border-bottom: 3px solid var(--neon-purple) !important;
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4),
-              0 4px 10px rgba(0, 0, 0, 0.5) !important;
+  background: var(--bg-warm-white) !important;
+  border-bottom: 3px solid var(--bg-soft-pink) !important;
+  box-shadow: 0 4px 20px rgba(174, 160, 140, 0.12) !important;
   backdrop-filter: blur(10px);
 }
 
-/* 品牌名稱 - 像素字體 + 霓虹光暈 */
+/* 品牌名稱 - 圓潤字體 + 珊瑚色 */
 .navbar-brand {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 1.5rem !important;
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 10px var(--neon-pink),
-               0 0 20px var(--neon-pink),
-               0 0 40px var(--neon-pink);
-  letter-spacing: 3px;
+  font-family: 'Fredoka One', cursive !important;
+  font-size: 1.6rem !important;
+  color: var(--coral) !important;
+  letter-spacing: 1px;
   transition: all 0.3s ease;
 }
 
 .navbar-brand:hover {
-  color: var(--neon-purple) !important;
-  text-shadow: 0 0 10px var(--neon-purple),
-               0 0 20px var(--neon-purple),
-               0 0 40px var(--neon-purple),
-               0 0 80px var(--neon-purple);
+  color: var(--coral-dark) !important;
   transform: scale(1.05);
-  animation: glitch 0.3s ease-in-out;
 }
 
-/* 導航連結 - 霓虹效果 */
+/* 導航連結 - 圓潤可愛 */
 .nav-link {
-  font-family: 'VT323', monospace !important;
-  font-size: 1.2rem !important;
-  color: var(--neon-purple-light) !important;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  color: var(--text-body) !important;
   transition: all 0.3s ease;
   position: relative;
   padding: 8px 16px !important;
+  border-radius: 12px;
 }
 
 .nav-link:hover {
-  color: var(--neon-cyan) !important;
-  text-shadow: 0 0 5px var(--neon-cyan),
-               0 0 10px var(--neon-cyan);
-  transform: translateY(-2px);
+  color: var(--coral) !important;
+  background: var(--bg-soft-pink);
+  transform: translateY(-1px);
 }
 
-/* 導航連結底部霓虹線條效果 */
+/* 導航連結底部效果 */
 .nav-link::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: 2px;
   left: 50%;
   width: 0;
-  height: 2px;
-  background: var(--neon-cyan);
-  box-shadow: 0 0 5px var(--neon-cyan);
+  height: 3px;
+  background: var(--coral);
+  border-radius: 3px;
   transform: translateX(-50%);
   transition: width 0.3s ease;
 }
 
 .nav-link:hover::after {
-  width: 80%;
+  width: 60%;
 }
 
 /* 特殊角色連結（管理員/員工）*/
 .nav-link.text-success {
-  color: var(--neon-green) !important;
-  text-shadow: 0 0 5px var(--neon-green);
-  font-weight: bold;
+  color: var(--mint-dark) !important;
+  font-weight: 800 !important;
 }
 
 .nav-link.text-info {
-  color: var(--neon-cyan) !important;
-  text-shadow: 0 0 5px var(--neon-cyan);
-  font-weight: bold;
+  color: var(--lavender) !important;
+  font-weight: 800 !important;
 }
 
 /* 歡迎訊息 */
 .nav-link.fw-bold.text-primary {
-  color: var(--neon-purple) !important;
-  text-shadow: 0 0 5px var(--neon-purple);
+  color: var(--coral) !important;
 }
 
 /* 登出連結 */
 .nav-link.text-danger {
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 5px var(--neon-pink);
+  color: var(--coral-dark) !important;
 }
 
 .nav-link.text-danger:hover {
-  color: #FF1744 !important;
-  text-shadow: 0 0 10px #FF1744,
-               0 0 20px #FF1744;
+  color: #FFFFFF !important;
+  background: var(--coral) !important;
 }
 
-/* 購物車按鈕 - 霓虹粉紅 CTA */
+/* 購物車按鈕 - 珊瑚色膠囊形 */
 .nav-link.btn.btn-primary {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 0.7rem !important;
-  background: transparent !important;
-  border: 2px solid var(--neon-pink) !important;
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 5px var(--neon-pink);
-  box-shadow: 0 0 10px rgba(244, 63, 94, 0.4);
-  padding: 10px 20px !important;
-  border-radius: 25px !important;
-  transition: all 0.3s ease;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 0.9rem !important;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.35);
+  padding: 10px 24px !important;
+  border-radius: 50px !important;
+  transition: all 0.3s var(--transition-bounce);
 }
 
 .nav-link.btn.btn-primary::after {
-  display: none; /* 移除底部線條 */
+  display: none;
 }
 
 .nav-link.btn.btn-primary:hover {
-  background: var(--neon-pink) !important;
-  color: var(--bg-dark) !important;
-  text-shadow: none;
-  box-shadow: 0 0 20px var(--neon-pink),
-              0 0 40px var(--neon-pink);
-  transform: scale(1.1) translateY(-2px);
+  background: linear-gradient(135deg, var(--coral-dark) 0%, var(--coral) 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.45);
+  transform: scale(1.05) translateY(-2px);
 }
 
-/* 漢堡選單按鈕 - 霓虹風格 */
+/* 漢堡選單按鈕 */
 .navbar-toggler {
-  border: 2px solid var(--neon-purple) !important;
-  box-shadow: 0 0 5px var(--neon-purple);
+  border: 2px solid var(--coral) !important;
+  border-radius: 12px;
 }
 
 .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%237C3AED' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23FF6B6B' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
 /* 全域背景調整 */
 body {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-cream);
 }
 </style>

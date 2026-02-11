@@ -60,32 +60,32 @@ onMounted(() => {
 
     <div v-else-if="product" class="row">
       <div class="col-md-6 mb-4">
-        <div class="card border-0 shadow-sm p-3">
+        <div class="card border-0 shadow-sm p-3 clay-card">
             <img :src="product.imageUrl ? `/images/${product.imageUrl}` : 'https://placehold.co/600x600?text=No+Image'" 
                  class="img-fluid rounded" 
-                 style="object-fit: contain; max-height: 500px;">
+                 style="object-fit: contain; max-height: 500px; border-radius: 20px;">
         </div>
       </div>
 
       <div class="col-md-6">
         <div class="ps-md-4">
-            <span class="badge bg-secondary mb-2">{{ product.categoryName || '熱銷商品' }}</span>
+            <span class="badge bg-secondary mb-3">{{ product.categoryName || '熱銷商品' }}</span>
             
             <h1 class="fw-bold mb-3">{{ product.title }}</h1>
             
             <h2 class="text-danger fw-bold mb-4">NT$ {{ formatPrice(product.price) }}</h2>
             
-            <p class="text-muted mb-4" style="line-height: 1.8;">
-                {{ product.description || '這個賣家很懶，沒有寫詳細介紹...' }}
-            </p>
+            <div class="description-box p-4 mb-4">
+              <p class="text-muted mb-0" style="line-height: 1.8;">
+                  {{ product.description || '這個賣家很懶，沒有寫詳細介紹...' }}
+              </p>
+            </div>
 
-            <hr class="my-4">
-
-            <div class="d-grid gap-2 d-md-block">
-                <button @click="addToCart" class="btn btn-dark btn-lg px-5 me-md-2">
-                    加入購物車
+            <div class="d-grid gap-2 d-md-block mt-4">
+                <button @click="addToCart" class="btn btn-primary btn-lg px-5 me-md-2 rounded-pill">
+                    🛒 加入購物車
                 </button>
-                <router-link to="/" class="btn btn-outline-secondary btn-lg">
+                <router-link to="/" class="btn btn-outline-dark btn-lg rounded-pill">
                     回首頁
                 </router-link>
             </div>
@@ -96,119 +96,109 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* 🎮 商品詳情頁 - 遊戲霓虹風格 */
+/* 🐾 商品詳情頁 - 寵物 Claymorphism 風格 */
 
-/* 商品圖片卡片 - 霓虹邊框 */
-.card.border-0.shadow-sm {
-  background: var(--bg-dark-card) !important;
-  border: 3px solid var(--neon-purple) !important;
-  box-shadow: 0 0 25px rgba(124, 58, 237, 0.6),
-              0 10px 40px rgba(0, 0, 0, 0.5) !important;
-  transition: all 0.3s ease;
-}
-
-.card.border-0.shadow-sm:hover {
-  border-color: var(--neon-pink) !important;
-  box-shadow: 0 0 40px rgba(244, 63, 94, 0.8),
-              0 15px 50px rgba(0, 0, 0, 0.6) !important;
+/* 商品圖片卡片 - Clay 效果 */
+.clay-card {
+  background: var(--bg-card) !important;
+  border: none !important;
+  border-radius: 28px !important;
+  box-shadow: 12px 12px 24px rgba(174, 160, 140, 0.25),
+              -8px -8px 20px rgba(255, 255, 255, 0.8) !important;
 }
 
 /* 分類標籤 */
 .badge.bg-secondary {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 0.6rem !important;
-  background: var(--neon-purple) !important;
-  color: var(--bg-dark);
-  border: 1px solid var(--neon-purple);
-  box-shadow: 0 0 10px var(--neon-purple);
-  padding: 6px 12px;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  background: var(--bg-soft-lavender) !important;
+  color: var(--lavender) !important;
+  padding: 8px 16px;
+  border-radius: 50px;
 }
 
 /* 商品標題 */
 h1.fw-bold {
-  font-family: 'Press Start 2P', cursive !important;
-  color: var(--neon-purple) !important;
-  text-shadow: 0 0 10px var(--neon-purple),
-               0 0 20px var(--neon-purple),
-               0 0 40px var(--neon-purple);
-  font-size: 1.8rem !important;
-  line-height: 1.6;
+  font-family: 'Fredoka One', cursive !important;
+  color: var(--text-dark) !important;
+  font-size: 2.2rem !important;
+  letter-spacing: 0.5px;
 }
 
 /* 價格 */
 h2.text-danger {
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 15px var(--neon-pink),
-               0 0 30px var(--neon-pink);
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 1.5rem !important;
+  color: var(--coral) !important;
+  font-family: 'Fredoka One', cursive !important;
+  font-size: 1.8rem !important;
 }
 
-/* 商品描述 */
+/* 商品描述區域 - 內凹 Clay 效果 */
+.description-box {
+  background: var(--bg-cream);
+  border-radius: 20px;
+  box-shadow: inset 4px 4px 8px rgba(174, 160, 140, 0.15),
+              inset -2px -2px 6px rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
 .text-muted {
-  font-family: 'VT323', monospace !important;
-  color: var(--text-secondary) !important;
-  font-size: 1.2rem !important;
-  line-height: 1.8;
-}
-
-/* 分隔線 */
-hr {
-  border-color: var(--neon-purple) !important;
-  opacity: 0.5;
+  font-family: 'Nunito', sans-serif !important;
+  color: var(--text-body) !important;
+  font-size: 1.1rem !important;
 }
 
 /* 加入購物車按鈕 */
-.btn-dark.btn-lg {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 0.8rem !important;
-  background: transparent !important;
-  border: 3px solid var(--neon-pink) !important;
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 10px var(--neon-pink);
-  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
-  transition: all 0.3s ease;
-  padding: 15px 40px !important;
+.btn-primary.btn-lg {
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 1.1rem !important;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.35);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 14px 40px !important;
 }
 
-.btn-dark.btn-lg:hover {
-  background: var(--neon-pink) !important;
-  color: var(--bg-dark) !important;
-  text-shadow: none;
-  box-shadow: 0 0 40px var(--neon-pink),
-              0 0 80px var(--neon-pink);
-  transform: scale(1.05);
+.btn-primary.btn-lg:hover {
+  background: linear-gradient(135deg, var(--coral-dark) 0%, var(--coral) 100%) !important;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.45);
+  transform: translateY(-3px) scale(1.02);
 }
 
 /* 回首頁按鈕 */
-.btn-outline-secondary.btn-lg {
-  font-family: 'VT323', monospace !important;
+.btn-outline-dark.btn-lg {
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 700 !important;
   font-size: 1rem !important;
-  background: transparent !important;
-  border: 2px solid var(--neon-purple-light) !important;
-  color: var(--neon-purple-light) !important;
+  background: var(--bg-card) !important;
+  border: 2px solid var(--text-muted) !important;
+  color: var(--text-muted) !important;
   transition: all 0.3s ease;
+  padding: 14px 30px !important;
 }
 
-.btn-outline-secondary.btn-lg:hover {
-  background: var(--neon-purple-light) !important;
-  color: var(--bg-dark) !important;
-  box-shadow: 0 0 15px var(--neon-purple-light);
+.btn-outline-dark.btn-lg:hover {
+  background: var(--text-muted) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
 }
 
 /* 載入中 */
 .spinner-border {
-  box-shadow: 0 0 15px var(--neon-purple);
+  border-color: var(--coral) !important;
+  border-right-color: transparent !important;
 }
 
 /* 響應式調整 */
 @media (max-width: 768px) {
   h1.fw-bold {
-    font-size: 1.2rem !important;
+    font-size: 1.6rem !important;
   }
   
   h2.text-danger {
-    font-size: 1.2rem !important;
+    font-size: 1.4rem !important;
   }
 }
 </style>

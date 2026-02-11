@@ -1,50 +1,57 @@
 /* ========================================
-   🎮 UBTIV GAMING - RETRO FUTURISM DESIGN SYSTEM
+   🐾 PAWPALS - PET GROOMING CLAYMORPHISM DESIGN SYSTEM
    ======================================== */
 
-/* Google Fonts - Retro Gaming */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+/* Google Fonts - Friendly & Rounded */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
 
 /* ========================================
-   CSS VARIABLES - NEON COLOR PALETTE
+   CSS VARIABLES - WARM PET COLOR PALETTE
    ======================================== */
 :root {
-  /* Neon Colors */
-  --neon-purple: #7C3AED;
-  --neon-purple-light: #A78BFA;
-  --neon-pink: #F43F5E;
-  --neon-blue: #3B82F6;
-  --neon-cyan: #06B6D4;
-  --neon-green: #10B981;
-  
-  /* Dark Background */
-  --bg-dark: #0F0F23;
-  --bg-dark-lighter: #1a1a2e;
-  --bg-dark-card: #16213e;
-  
+  /* Primary Colors */
+  --coral: #FF6B6B;
+  --coral-light: #FF8E8E;
+  --coral-dark: #E85555;
+  --mint: #4ECDC4;
+  --mint-light: #7EDDD6;
+  --mint-dark: #3AB5AD;
+  --lavender: #A78BFA;
+  --lavender-light: #C4B5FD;
+  --sunny: #FFD93D;
+  --sunny-light: #FFE570;
+
+  /* Background Colors */
+  --bg-cream: #FFF8F0;
+  --bg-warm-white: #FFFDFB;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFF5EE;
+  --bg-soft-pink: #FFE8E8;
+  --bg-soft-mint: #E8F8F5;
+  --bg-soft-lavender: #F0EBFF;
+
   /* Text Colors */
-  --text-primary: #E2E8F0;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  
-  /* Neon Glow Effects */
-  --glow-purple: 0 0 5px var(--neon-purple),
-                 0 0 10px var(--neon-purple),
-                 0 0 20px var(--neon-purple),
-                 0 0 40px var(--neon-purple);
-  
-  --glow-pink: 0 0 5px var(--neon-pink),
-               0 0 10px var(--neon-pink),
-               0 0 20px var(--neon-pink),
-               0 0 40px var(--neon-pink);
-  
-  --glow-cyan: 0 0 5px var(--neon-cyan),
-               0 0 10px var(--neon-cyan),
-               0 0 20px var(--neon-cyan);
-  
+  --text-dark: #2D2D2D;
+  --text-body: #4A4A4A;
+  --text-muted: #8B7E74;
+  --text-light: #B8ADA3;
+
+  /* Claymorphism Shadows */
+  --clay-shadow: 8px 8px 16px rgba(174, 160, 140, 0.25),
+                 -4px -4px 12px rgba(255, 255, 255, 0.8);
+  --clay-shadow-hover: 12px 12px 24px rgba(174, 160, 140, 0.3),
+                       -6px -6px 16px rgba(255, 255, 255, 0.9);
+  --clay-shadow-inset: inset 4px 4px 8px rgba(174, 160, 140, 0.15),
+                       inset -2px -2px 6px rgba(255, 255, 255, 0.7);
+  --clay-shadow-sm: 4px 4px 10px rgba(174, 160, 140, 0.2),
+                    -2px -2px 8px rgba(255, 255, 255, 0.7);
+
   /* Spacing & Sizing */
-  --border-radius: 8px;
-  --transition-speed: 0.3s;
+  --border-radius: 20px;
+  --border-radius-lg: 28px;
+  --border-radius-pill: 50px;
+  --transition-speed: 0.35s;
+  --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ========================================
@@ -55,18 +62,18 @@
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--text-primary);
+  background-color: var(--bg-cream);
+  color: var(--text-body);
   margin: 0;
   padding: 0;
-  font-family: 'VT323', monospace;
-  font-size: 20px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
 }
 
-/* CRT Scanline Effect */
+/* Cute paw print background pattern */
 body::before {
   content: '';
   position: fixed;
@@ -74,16 +81,12 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.15),
-    rgba(0, 0, 0, 0.15) 1px,
-    transparent 1px,
-    transparent 2px
-  );
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(255, 107, 107, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(78, 205, 196, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.02) 0%, transparent 50%);
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.3;
+  z-index: -1;
 }
 
 #app {
@@ -97,142 +100,137 @@ body::before {
    TYPOGRAPHY
    ======================================== */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Press Start 2P', cursive;
-  color: var(--neon-purple);
-  text-shadow: var(--glow-purple);
-  line-height: 1.4;
-  letter-spacing: 2px;
+  font-family: 'Fredoka One', cursive;
+  color: var(--text-dark);
+  line-height: 1.3;
+  letter-spacing: 0.5px;
 }
 
-h1 { font-size: 2rem; margin-bottom: 1.5rem; }
-h2 { font-size: 1.5rem; margin-bottom: 1.2rem; }
-h3 { font-size: 1.2rem; margin-bottom: 1rem; }
-h4 { font-size: 1rem; margin-bottom: 0.8rem; }
+h1 { font-size: 2.2rem; margin-bottom: 1.5rem; }
+h2 { font-size: 1.8rem; margin-bottom: 1.2rem; }
+h3 { font-size: 1.4rem; margin-bottom: 1rem; }
+h4 { font-size: 1.2rem; margin-bottom: 0.8rem; }
 
 p {
-  font-family: 'VT323', monospace;
-  font-size: 1.2rem;
-  line-height: 1.6;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-body);
 }
 
 /* ========================================
-   NEON UTILITY CLASSES
+   CLAYMORPHISM UTILITY CLASSES
    ======================================== */
-.neon-text-purple {
-  color: var(--neon-purple);
-  text-shadow: var(--glow-purple);
+.clay-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--clay-shadow);
+  border: none;
+  transition: all var(--transition-speed) var(--transition-bounce);
 }
 
-.neon-text-pink {
-  color: var(--neon-pink);
-  text-shadow: var(--glow-pink);
+.clay-card:hover {
+  box-shadow: var(--clay-shadow-hover);
+  transform: translateY(-4px);
 }
 
-.neon-text-cyan {
-  color: var(--neon-cyan);
-  text-shadow: var(--glow-cyan);
-}
-
-.neon-border {
-  border: 2px solid var(--neon-purple);
-  box-shadow: var(--glow-purple);
-}
-
-.neon-border-pink {
-  border: 2px solid var(--neon-pink);
-  box-shadow: var(--glow-pink);
+.clay-inset {
+  background: var(--bg-cream);
+  border-radius: var(--border-radius);
+  box-shadow: var(--clay-shadow-inset);
 }
 
 /* ========================================
-   BUTTONS - NEON STYLE
+   BUTTONS - CLAY STYLE
    ======================================== */
 .btn-neon,
 .btn-primary {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.7rem;
-  padding: 12px 24px;
-  background: transparent;
-  border: 2px solid var(--neon-pink);
-  color: var(--neon-pink);
-  text-shadow: var(--glow-pink);
-  box-shadow: var(--glow-pink);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%);
+  border: none;
+  color: #FFFFFF;
+  border-radius: var(--border-radius-pill);
   cursor: pointer;
-  transition: all var(--transition-speed) ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  transition: all var(--transition-speed) var(--transition-bounce);
+  text-transform: none;
+  letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.35);
 }
 
 .btn-neon:hover,
 .btn-primary:hover {
-  background: var(--neon-pink);
-  color: var(--bg-dark);
-  text-shadow: none;
-  transform: scale(1.05);
-  box-shadow: 0 0 10px var(--neon-pink),
-              0 0 20px var(--neon-pink),
-              0 0 40px var(--neon-pink),
-              0 0 80px var(--neon-pink);
+  background: linear-gradient(135deg, var(--coral-dark) 0%, var(--coral) 100%);
+  color: #FFFFFF;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.45);
 }
 
 .btn-neon:active,
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
 }
 
 /* Secondary Buttons */
 .btn-outline-dark,
 .btn-secondary {
-  font-family: 'VT323', monospace;
-  font-size: 1rem;
-  padding: 10px 20px;
-  background: transparent;
-  border: 2px solid var(--neon-purple-light);
-  color: var(--neon-purple-light);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 10px 24px;
+  background: var(--bg-card);
+  border: 2px solid var(--coral);
+  color: var(--coral);
+  border-radius: var(--border-radius-pill);
   cursor: pointer;
-  transition: all var(--transition-speed) ease;
+  transition: all var(--transition-speed) var(--transition-bounce);
+  box-shadow: var(--clay-shadow-sm);
 }
 
 .btn-outline-dark:hover,
 .btn-secondary:hover {
-  background: var(--neon-purple-light);
-  color: var(--bg-dark);
-  box-shadow: 0 0 10px var(--neon-purple-light);
+  background: var(--coral);
+  color: #FFFFFF;
+  border-color: var(--coral);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
 }
 
 /* ========================================
-   CARDS - NEON STYLE
+   CARDS - CLAYMORPHISM STYLE
    ======================================== */
 .card {
-  background: var(--bg-dark-card) !important;
-  border: 2px solid var(--neon-purple) !important;
-  box-shadow: 0 0 10px rgba(124, 58, 237, 0.3) !important;
-  transition: all var(--transition-speed) ease;
+  background: var(--bg-card) !important;
+  border: none !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--clay-shadow) !important;
+  transition: all var(--transition-speed) var(--transition-bounce);
   position: relative;
   overflow: hidden;
 }
 
 .card:hover {
-  border-color: var(--neon-pink) !important;
-  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6),
-              0 10px 30px rgba(0, 0, 0, 0.5) !important;
-  transform: translateY(-5px);
+  box-shadow: var(--clay-shadow-hover) !important;
+  transform: translateY(-4px);
 }
 
 .card-body {
-  color: var(--text-primary);
+  color: var(--text-body);
 }
 
 .card-title {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.8rem !important;
-  color: var(--neon-purple-light);
-  text-shadow: 0 0 5px var(--neon-purple-light);
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem !important;
+  color: var(--text-dark);
 }
 
 /* ========================================
-   FORMS - NEON STYLE
+   FORMS - WARM CLAY STYLE
    ======================================== */
 .form-control,
 .form-select,
@@ -242,13 +240,15 @@ input[type="password"],
 input[type="number"],
 textarea,
 select {
-  background: var(--bg-dark-lighter) !important;
-  border: 2px solid var(--neon-purple-light) !important;
-  color: var(--text-primary) !important;
-  font-family: 'VT323', monospace;
-  font-size: 1.1rem;
-  padding: 10px 15px;
+  background: var(--bg-cream) !important;
+  border: 2px solid #E8DDD0 !important;
+  color: var(--text-dark) !important;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  padding: 12px 16px;
+  border-radius: 16px !important;
   transition: all var(--transition-speed) ease;
+  box-shadow: var(--clay-shadow-inset);
 }
 
 .form-control:focus,
@@ -256,128 +256,211 @@ select {
 input:focus,
 textarea:focus,
 select:focus {
-  background: var(--bg-dark) !important;
-  border-color: var(--neon-pink) !important;
-  box-shadow: 0 0 10px var(--neon-pink) !important;
+  background: var(--bg-warm-white) !important;
+  border-color: var(--coral) !important;
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15) !important;
   outline: none;
 }
 
 .form-label {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.7rem;
-  color: var(--neon-purple-light);
-  text-shadow: 0 0 5px var(--neon-purple-light);
-  margin-bottom: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  margin-bottom: 6px;
 }
 
 /* ========================================
-   TABLES - NEON STYLE
+   TABLES - WARM STYLE
    ======================================== */
 .table {
-  color: var(--text-primary) !important;
-  font-family: 'VT323', monospace;
-  font-size: 1.1rem;
+  color: var(--text-body) !important;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  border-collapse: separate;
+  border-spacing: 0 4px;
 }
 
 .table thead th {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.7rem;
-  background: var(--bg-dark-lighter) !important;
-  color: var(--neon-purple) !important;
-  text-shadow: var(--glow-purple);
-  border-color: var(--neon-purple) !important;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem;
+  background: var(--bg-soft-pink) !important;
+  color: var(--coral-dark) !important;
+  border: none !important;
+  padding: 14px 16px;
+  letter-spacing: 0.5px;
+}
+
+.table thead th:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+.table thead th:last-child {
+  border-radius: 0 12px 12px 0;
 }
 
 .table tbody tr {
-  background: var(--bg-dark-card) !important;
-  border-color: var(--neon-purple-light) !important;
+  background: var(--bg-card) !important;
+  border: none !important;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(174, 160, 140, 0.1);
 }
 
 .table tbody tr:hover {
-  background: var(--bg-dark-lighter) !important;
-  box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+  background: var(--bg-card-hover) !important;
+  transform: scale(1.005);
+  box-shadow: 0 4px 12px rgba(174, 160, 140, 0.15);
 }
 
 .table td {
-  border-color: rgba(124, 58, 237, 0.3) !important;
+  border: none !important;
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.table td:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+.table td:last-child {
+  border-radius: 0 12px 12px 0;
 }
 
 /* ========================================
-   PAGINATION - NEON STYLE
+   PAGINATION - PAW STYLE
    ======================================== */
 .pagination .page-link {
-  background: var(--bg-dark-card) !important;
-  border: 2px solid var(--neon-purple-light) !important;
-  color: var(--neon-purple-light) !important;
-  font-family: 'VT323', monospace;
-  font-size: 1.1rem;
+  background: var(--bg-card) !important;
+  border: 2px solid #E8DDD0 !important;
+  color: var(--text-body) !important;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
   margin: 0 4px;
-  transition: all 0.2s ease;
+  border-radius: 12px !important;
+  padding: 8px 14px;
+  transition: all 0.25s var(--transition-bounce);
+  box-shadow: var(--clay-shadow-sm);
 }
 
 .pagination .page-link:hover {
-  background: var(--neon-purple-light) !important;
-  color: var(--bg-dark) !important;
-  box-shadow: 0 0 10px var(--neon-purple-light);
+  background: var(--bg-soft-pink) !important;
+  color: var(--coral) !important;
+  border-color: var(--coral) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
 }
 
 .pagination .page-item.active .page-link {
-  background: var(--neon-pink) !important;
-  border-color: var(--neon-pink) !important;
-  color: var(--bg-dark) !important;
-  box-shadow: var(--glow-pink);
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%) !important;
+  border-color: var(--coral) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.35);
 }
 
 .pagination .page-item.disabled .page-link {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* ========================================
-   LOADING SPINNER - NEON STYLE
+   LOADING SPINNER - PET STYLE
    ======================================== */
 .spinner-border {
-  border-color: var(--neon-purple) !important;
+  border-color: var(--coral) !important;
   border-right-color: transparent !important;
-  box-shadow: var(--glow-purple);
 }
 
 /* ========================================
-   BADGES - NEON STYLE
+   BADGES - CUTE STYLE
    ======================================== */
 .badge {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.6rem;
-  padding: 4px 8px;
-  background: var(--neon-purple) !important;
-  color: var(--bg-dark);
-  text-shadow: none;
-  border: 1px solid var(--neon-purple);
-  box-shadow: 0 0 5px var(--neon-purple);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 6px 14px;
+  border-radius: var(--border-radius-pill);
+  border: none;
+}
+
+.badge.bg-secondary {
+  background: var(--bg-soft-lavender) !important;
+  color: var(--lavender) !important;
+}
+
+.badge.bg-success {
+  background: var(--bg-soft-mint) !important;
+  color: var(--mint-dark) !important;
+}
+
+.badge.bg-warning {
+  background: #FFF3CD !important;
+  color: #856404 !important;
 }
 
 /* ========================================
-   SCROLLBAR - NEON STYLE
+   ALERTS - WARM STYLE
+   ======================================== */
+.alert-info {
+  background: var(--bg-soft-mint) !important;
+  border: 2px solid var(--mint) !important;
+  color: var(--mint-dark) !important;
+  border-radius: var(--border-radius) !important;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  box-shadow: var(--clay-shadow-sm);
+}
+
+/* ========================================
+   SCROLLBAR - CUTE STYLE
    ======================================== */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-dark);
-  border-left: 1px solid var(--neon-purple);
+  background: var(--bg-cream);
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--neon-purple);
-  box-shadow: 0 0 10px var(--neon-purple);
-  border-radius: 6px;
+  background: linear-gradient(180deg, var(--coral-light), var(--coral));
+  border-radius: 10px;
+  border: 2px solid var(--bg-cream);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--neon-pink);
-  box-shadow: 0 0 10px var(--neon-pink);
+  background: linear-gradient(180deg, var(--coral), var(--coral-dark));
+}
+
+/* ========================================
+   MODAL - CLAY STYLE
+   ======================================== */
+.modal-content {
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%) !important;
+  border-bottom: none !important;
+  padding: 18px 24px !important;
+}
+
+.modal-header .modal-title {
+  color: #FFFFFF !important;
+  font-family: 'Fredoka One', cursive !important;
+}
+
+.modal-header .btn-close {
+  filter: brightness(0) invert(1);
+}
+
+.modal-body {
+  padding: 24px !important;
 }
 
 /* ========================================
@@ -385,50 +468,64 @@ select:focus {
    ======================================== */
 @media (max-width: 768px) {
   body {
-    font-size: 18px;
+    font-size: 15px;
   }
-  
-  h1 { font-size: 1.5rem; }
-  h2 { font-size: 1.2rem; }
-  h3 { font-size: 1rem; }
-  
+
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.2rem; }
+
   .btn-neon,
   .btn-primary {
-    font-size: 0.6rem;
-    padding: 10px 18px;
+    font-size: 0.85rem;
+    padding: 10px 22px;
+  }
+
+  :root {
+    --border-radius: 16px;
+    --border-radius-lg: 20px;
   }
 }
 
 /* ========================================
    CUSTOM ANIMATIONS
    ======================================== */
-@keyframes glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(2px, -2px); }
-  100% { transform: translate(0); }
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
-.glitch-effect:hover {
-  animation: glitch 0.3s ease-in-out;
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-4px) rotate(1deg); }
+  75% { transform: translateY(2px) rotate(-1deg); }
 }
 
-@keyframes neon-pulse {
-  0%, 100% {
-    text-shadow: 0 0 5px var(--neon-purple),
-                 0 0 10px var(--neon-purple),
-                 0 0 20px var(--neon-purple);
+@keyframes paw-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  50% {
-    text-shadow: 0 0 10px var(--neon-purple),
-                 0 0 20px var(--neon-purple),
-                 0 0 40px var(--neon-purple),
-                 0 0 80px var(--neon-purple);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.neon-pulse {
-  animation: neon-pulse 2s ease-in-out infinite;
+.bounce-hover:hover {
+  animation: gentle-bounce 0.6s var(--transition-bounce);
+}
+
+.float-animation {
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+.fade-in {
+  animation: fade-in-up 0.5s ease-out;
 }

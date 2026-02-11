@@ -1,53 +1,52 @@
 <template>
   <div class="container" style="margin-top: 100px; margin-bottom: 100px;">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card shadow-sm border-0 rounded-4">
-          <div class="card-body p-4 p-md-5">
-            <div class="d-flex align-items-center mb-4">
-              <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-fill text-primary" viewBox="0 0 16 16">
-                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-                </svg>
+      <div class="col-md-7 col-lg-6">
+        <div class="card border-0 p-4 clay-card">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-5 justify-content-center">
+              <div class="avatar-circle me-3 animate__animated animate__bounceIn">
+                <i class="bi bi-person-fill text-white fs-2"></i>
               </div>
-              <h2 class="h2 fw-bold mb-0">個人帳號資訊</h2>
+              <h2 class="h2 fw-bold mb-0 text-dark">個人帳號頁面</h2>
             </div>
             
             <form @submit.prevent="updateProfile">
-              <div class="mb-3">
-                <label class="form-label text-secondary small fw-bold">登入帳號 (Email)</label>
-                <input type="email" class="form-control bg-light border-0 py-2" v-model="profile.email" readonly disabled>
-                <div class="form-text">電子信箱為帳號唯一識別，不可修改。</div>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-bold">真實姓名 / 稱呼</label>
-                <input type="text" class="form-control py-2" v-model="profile.fullName" placeholder="例如：曾先生" required>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label fw-bold">聯絡電話</label>
-                <input type="text" class="form-control py-2" v-model="profile.phone" placeholder="例如：0912345678">
+              <div class="mb-4">
+                <label class="form-label text-muted small fw-bold">📧 登入帳號 (Email)</label>
+                <div class="input-clay-disabled">
+                  <input type="email" class="form-control-plaintext" v-model="profile.email" readonly disabled>
+                </div>
+                <div class="form-text mt-2"><i class="bi bi-info-circle me-1"></i>電子信箱為帳號唯一識別，不可修改。</div>
               </div>
 
               <div class="mb-4">
-                <label class="form-label fw-bold">收件地址</label>
+                <label class="form-label fw-bold">👤 真實姓名 / 稱呼</label>
+                <input type="text" class="form-control" v-model="profile.fullName" placeholder="例如：王小明" required>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label fw-bold">📱 聯絡電話</label>
+                <input type="text" class="form-control" v-model="profile.phone" placeholder="例如：0912345678">
+              </div>
+
+              <div class="mb-5">
+                <label class="form-label fw-bold">🏠 收件地址</label>
                 <textarea class="form-control" v-model="profile.address" rows="3" placeholder="請輸入預設配送地址"></textarea>
               </div>
 
-              <div class="d-grid shadow-sm">
-                <button type="submit" class="btn btn-primary py-3 rounded-3 fw-bold" :disabled="loading">
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary py-3 fw-bold rounded-pill shadow-lg" :disabled="loading">
                   <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                  {{ loading ? '更新中...' : '儲存修改' }}
+                  {{ loading ? '更新中...' : '💾 儲存修改' }}
                 </button>
               </div>
             </form>
 
-            <div v-if="message" class="alert mt-4 shadow-sm border-0 animate__animated animate__fadeIn" :class="messageClass" role="alert">
-                <div class="d-flex align-items-center">
-                    <svg v-if="message.includes('成功')" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill me-2" viewBox="0 0 16 16">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                    </svg>
+            <div v-if="message" class="alert mt-4 shadow-sm border-0 animate__animated animate__fadeInUp" :class="messageClass" role="alert">
+                <div class="d-flex align-items-center justify-content-center">
+                    <i v-if="message.includes('成功')" class="bi bi-check-circle-fill me-2 fs-5"></i>
+                    <i v-else class="bi bi-exclamation-circle-fill me-2 fs-5"></i>
                     <span>{{ message }}</span>
                 </div>
             </div>
@@ -89,15 +88,15 @@ const updateProfile = async () => {
   try {
     await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, profile.value);
     
-    message.value = '修改成功！您的姓名已更新，問候語將立即改變。';
-    messageClass.value = 'alert-success text-success bg-success bg-opacity-10';
+    message.value = '修改成功！您的資料已更新。';
+    messageClass.value = 'alert-success';
     
-    // 同步更新全域狀態，讓導覽列立即顯示新姓名
+    // 同步更新全域狀態
     authStore.userFullName = profile.value.fullName;
     
   } catch (err) {
     message.value = '修改失敗，請稍後再試';
-    messageClass.value = 'alert-danger text-danger bg-danger bg-opacity-10';
+    messageClass.value = 'alert-danger';
   } finally {
     loading.value = false;
   }
@@ -107,11 +106,79 @@ onMounted(fetchProfile);
 </script>
 
 <style scoped>
-.form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+/* 🐾 個人資料頁 - Claymorphism */
+
+.clay-card {
+  background: var(--bg-card);
+  border-radius: 32px;
+  box-shadow: 12px 12px 30px rgba(174, 160, 140, 0.2),
+              -8px -8px 20px rgba(255, 255, 255, 0.9);
 }
-.rounded-4 {
-    border-radius: 1rem !important;
+
+/* 頭像圓圈 */
+.avatar-circle {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 10px rgba(255, 107, 107, 0.3);
+}
+
+/* 標題 */
+h2 {
+  font-family: 'Fredoka One', cursive !important;
+  color: var(--text-dark);
+}
+
+/* 唯讀輸入框樣式 - 內凹 */
+.input-clay-disabled {
+  background: var(--bg-cream);
+  border-radius: 16px;
+  padding: 8px 16px;
+  box-shadow: inset 2px 2px 5px rgba(174, 160, 140, 0.1),
+              inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+  opacity: 0.8;
+}
+
+.form-control-plaintext {
+  font-family: 'Nunito', sans-serif;
+  color: var(--text-muted) !important;
+  font-weight: 700;
+  outline: none;
+}
+
+/* 按鈕 */
+.btn-primary {
+  font-family: 'Fredoka One', cursive;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+}
+
+/* 成功訊息 */
+.alert-success {
+  background-color: var(--bg-soft-mint) !important;
+  color: var(--mint-dark) !important;
+  border: 2px solid var(--mint) !important;
+  border-radius: 20px !important;
+  font-weight: 700;
+}
+
+.alert-danger {
+  background-color: var(--bg-soft-pink) !important;
+  color: var(--coral-dark) !important;
+  border: 2px solid var(--coral) !important;
+  border-radius: 20px !important;
+  font-weight: 700;
+}
+
+/* 響應式 */
+@media (max-width: 768px) {
+  .clay-card {
+    padding: 20px !important;
+    border-radius: 24px;
+  }
 }
 </style>

@@ -42,19 +42,12 @@ const handleRegister = async () => {
         if (error.response && error.response.data) {
             const data = error.response.data;
 
-            // 🕵️‍♂️ 情況 A: 後端回傳的是標準錯誤物件 (包含 errors 欄位)
-            // 例如: { errors: { Password: ["密碼太短", "沒大寫"], Email: ["格式錯誤"] } }
             if (data.errors) {
-                // 1. 取出所有錯誤訊息陣列 (Object.values)
-                // 2. 把多個陣列扁平化成一個陣列 (flat)
-                // 3. 用換行符號接起來 (join)
                 alertMessage = Object.values(data.errors).flat().join("\n");
             }
-            // 🕵️‍♂️ 情況 B: 後端直接回傳字串陣列 (有時候 ASP.NET 會這樣)
             else if (Array.isArray(data)) {
                 alertMessage = data.join("\n");
             }
-            // 🕵️‍♂️ 情況 C: 後端直接回傳純文字
             else if (typeof data === 'string') {
                 alertMessage = data;
             }
@@ -69,11 +62,11 @@ const handleRegister = async () => {
 <template>
     <div class="d-flex align-items-center justify-content-center" style="min-height: 80vh;">
 
-        <div class="card shadow-lg border-0 rounded-4" style="width: 100%; max-width: 400px;">
+        <div class="card shadow-lg border-0 rounded-4" style="width: 100%; max-width: 420px;">
             <div class="card-body p-5">
 
-                <h2 class="text-center fw-bold mb-4">加入會員</h2>
-                <p class="text-center text-muted mb-4">建立您的 ShopDemo 帳戶</p>
+                <h2 class="text-center fw-bold mb-2">🐾 加入會員</h2>
+                <p class="text-center text-muted mb-4">建立您的 PawPals 帳戶</p>
 
                 <form @submit.prevent="handleRegister">
                     <div class="form-floating mb-3">
@@ -94,7 +87,7 @@ const handleRegister = async () => {
                         <label for="regConfirmPass">再次輸入密碼</label>
                     </div>
 
-                    <button type="submit" class="btn btn-dark w-100 py-3 fw-bold rounded-pill">
+                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold rounded-pill">
                         註冊帳號
                     </button>
                 </form>
@@ -112,9 +105,61 @@ const handleRegister = async () => {
 </template>
 
 <style scoped>
+/* 🐾 註冊頁面 - 寵物 Claymorphism 風格 */
+
+.card.shadow-lg {
+  background: var(--bg-card) !important;
+  border: none !important;
+  box-shadow: 12px 12px 30px rgba(174, 160, 140, 0.25),
+              -6px -6px 16px rgba(255, 255, 255, 0.8) !important;
+  border-radius: 28px !important;
+}
+
+h2.text-center {
+  font-family: 'Fredoka One', cursive !important;
+  color: var(--coral) !important;
+  font-size: 1.8rem !important;
+}
+
+.text-muted {
+  font-family: 'Nunito', sans-serif !important;
+  color: var(--text-muted) !important;
+}
+
 .form-control:focus {
-    box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.15);
-    /* 改成深色陰影搭配 Dark 按鈕 */
-    border-color: #212529;
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15) !important;
+  border-color: var(--coral) !important;
+}
+
+.form-floating label {
+  font-family: 'Nunito', sans-serif !important;
+  color: var(--text-muted) !important;
+}
+
+.btn-primary.w-100 {
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 800 !important;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.35);
+  border-radius: 50px !important;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-primary.w-100:hover {
+  background: linear-gradient(135deg, var(--coral-dark) 0%, var(--coral) 100%) !important;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.45);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.text-primary.small {
+  color: var(--coral) !important;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 800 !important;
+}
+
+.text-primary.small:hover {
+  color: var(--coral-dark) !important;
 }
 </style>

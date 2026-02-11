@@ -32,10 +32,10 @@ const handleLogin = async () => {
 <template>
   <div class="d-flex align-items-center justify-content-center" style="min-height: 80vh;">
 
-    <div class="card shadow-lg border-0 rounded-4" style="width: 100%; max-width: 400px;">
+    <div class="card shadow-lg border-0 rounded-4" style="width: 100%; max-width: 420px;">
       <div class="card-body p-5">
 
-        <h2 class="text-center fw-bold mb-4">Ubtiv</h2>
+        <h2 class="text-center fw-bold mb-2">🐾 PawPals</h2>
         <p class="text-center text-muted mb-4">歡迎回來，請登入您的帳戶</p>
 
         <form @submit.prevent="handleLogin">
@@ -69,86 +69,80 @@ const handleLogin = async () => {
 </template>
 
 <style scoped>
-/* 🎮 登入頁面 - 遊戲霓虹風格 */
+/* 🐾 登入頁面 - 寵物溫暖 Claymorphism 風格 */
 
-/* 登入卡片 - 霓虹邊框 */
+/* 登入卡片 - Claymorphism */
 .card.shadow-lg {
-  background: var(--bg-dark-card) !important;
-  border: 3px solid var(--neon-purple) !important;
-  box-shadow: 0 0 30px rgba(124, 58, 237, 0.6),
-              0 15px 50px rgba(0, 0, 0, 0.6) !important;
-  border-radius: 15px !important;
+  background: var(--bg-card) !important;
+  border: none !important;
+  box-shadow: 12px 12px 30px rgba(174, 160, 140, 0.25),
+              -6px -6px 16px rgba(255, 255, 255, 0.8) !important;
+  border-radius: 28px !important;
 }
 
 /* 品牌標題 */
 h2.text-center {
-  font-family: 'Press Start 2P', cursive !important;
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 15px var(--neon-pink),
-               0 0 30px var(--neon-pink),
-               0 0 60px var(--neon-pink);
-  font-size: 1.8rem !important;
-  letter-spacing: 4px;
+  font-family: 'Fredoka One', cursive !important;
+  color: var(--coral) !important;
+  font-size: 2rem !important;
+  letter-spacing: 2px;
 }
 
 /* 歡迎文字 */
 .text-muted {
-  font-family: 'VT323', monospace !important;
-  color: var(--text-secondary) !important;
-  font-size: 1.1rem !important;
+  font-family: 'Nunito', sans-serif !important;
+  color: var(--text-muted) !important;
+  font-size: 0.95rem !important;
 }
 
-/* 表單輸入框樣式已在全域 CSS 定義 */
+/* 表單輸入框焦點 */
 .form-control:focus {
-  box-shadow: 0 0 15px var(--neon-pink) !important;
-  border-color: var(--neon-pink) !important;
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15) !important;
+  border-color: var(--coral) !important;
 }
 
 /* 浮動標籤 */
 .form-floating label {
-  font-family: 'VT323', monospace !important;
-  color: var(--neon-purple-light) !important;
-  font-size: 1rem;
+  font-family: 'Nunito', sans-serif !important;
+  color: var(--text-muted) !important;
+  font-size: 0.95rem;
 }
 
 /* 登入按鈕 */
 .btn-primary.w-100 {
-  font-family: 'Press Start 2P', cursive !important;
-  font-size: 0.8rem !important;
-  background: transparent !important;
-  border: 3px solid var(--neon-pink) !important;
-  color: var(--neon-pink) !important;
-  text-shadow: 0 0 10px var(--neon-pink);
-  box-shadow: 0 0 20px rgba(244, 63, 94, 0.6);
-  border-radius: 25px !important;
-  transition: all 0.3s ease;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 1rem !important;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%) !important;
+  border: none !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.35);
+  border-radius: 50px !important;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btn-primary.w-100:hover {
-  background: var(--neon-pink) !important;
-  color: var(--bg-dark) !important;
-  text-shadow: none;
-  box-shadow: 0 0 40px var(--neon-pink),
-              0 0 80px var(--neon-pink);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, var(--coral-dark) 0%, var(--coral) 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.45);
+  transform: translateY(-2px) scale(1.02);
 }
 
 /* 註冊連結 */
 .text-primary.small {
-  color: var(--neon-cyan) !important;
-  font-family: 'VT323', monospace !important;
-  font-size: 1rem !important;
-  text-shadow: 0 0 5px var(--neon-cyan);
+  color: var(--coral) !important;
+  font-family: 'Nunito', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 0.9rem !important;
   transition: all 0.2s ease;
 }
 
 .text-primary.small:hover {
-  color: var(--neon-purple) !important;
-  text-shadow: 0 0 10px var(--neon-purple);
+  color: var(--coral-dark) !important;
 }
 
 .small.text-muted {
-  font-family: 'VT323', monospace;
-  font-size: 0.95rem !important;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem !important;
 }
 </style>
