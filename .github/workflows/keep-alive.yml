@@ -1,13 +1,19 @@
-name: Keep Website Alive
+name: Keep Website Alive (Daytime Only)
 
 on:
   schedule:
-    - cron: "0 */3 * * *" # Every 3 hours
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+    # 說明：
+    # UTC 時間 01:00 ~ 14:59 (對應台灣時間 09:00 ~ 22:59)
+    # 在這段時間內，每 14 分鐘喚醒一次
+    # 這樣 Render 會從早上 9 點一直醒著到晚上 11 點左右
+    - cron: '*/14 1-14 * * *'
+  workflow_dispatch: # 保留手動測試按鈕
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Website Status
-        run: curl -I https://shopbackend-58gp.onrender.com/api/Product
+      - name: Wake up Render & Supabase
+        # 使用 --fail 確保失敗時能收到通知
+        # 記得確認你的 C# 後端已經部署了 /api/health
+        run: curl --fail https://shopbackend-58gp.onrender.com/api/health
