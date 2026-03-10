@@ -124,7 +124,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ShopDbContext>();
     // 呼叫我們剛剛寫的補貨機
-    DbInitializer.Initialize(context);
+    // DbInitializer.Initialize(context);
 }
 
 // Configure the HTTP request pipeline.

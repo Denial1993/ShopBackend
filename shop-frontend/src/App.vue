@@ -2,6 +2,8 @@
 import { onMounted } from 'vue';
 import { authStore } from './store.js'; // 👈 引入 store
 import { useRouter } from 'vue-router'; // 引入 router 做登出跳轉
+import LineContactButton from './components/LineContactButton.vue';
+
 const router = useRouter();
 
 // 網頁一打開，就檢查登入狀態
@@ -73,6 +75,9 @@ const handleLogout = () => {
   <div style="margin-top: 80px;">
     <router-view></router-view>
   </div>
+
+  <!-- 全域懸浮按鈕 -->
+  <LineContactButton />
 
 </template>
 
