@@ -3,6 +3,8 @@ import { onMounted } from 'vue';
 import { authStore } from './store.js'; // 👈 引入 store
 import { useRouter } from 'vue-router'; // 引入 router 做登出跳轉
 import LineContactButton from './components/LineContactButton.vue';
+import AiChatWidget from './components/AiChatWidget.vue';
+import Footer from './components/Footer.vue';
 
 const router = useRouter();
 
@@ -78,7 +80,9 @@ const handleLogout = () => {
 
   <!-- 全域懸浮按鈕 -->
   <LineContactButton />
+  <AiChatWidget />
 
+  <Footer />
 </template>
 
 <style>

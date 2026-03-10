@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.SemanticKernel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -86,6 +87,22 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ECPayService>();
+
+// --- ⬇️ 新增這段 (註冊 Semantic Kernel 與 Gemini 服務) ⬇️ ---
+var aiKey = builder.Configuration["AI:ApiKey"];
+if (!string.IsNullOrEmpty(aiKey) && aiKey != "YOUR_GEMINI_API_KEY_HERE")
+{
+    builder.Services.AddKernel()
+        .AddGoogleAIGeminiChatCompletion(
+            modelId: builder.Configuration["AI:ModelId"]!,
+            apiKey: aiKey);
+}
+else
+{
+    // 若沒有 Key, 依舊註冊一個空的 Kernel 避免 injection 失敗，但會在 Controller catch 處理
+    builder.Services.AddKernel();
+}
+// --- ⬆️ 新增這段 ⬆️ ---
 // 2. 註冊 FluentValidation
 builder.Services.AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
